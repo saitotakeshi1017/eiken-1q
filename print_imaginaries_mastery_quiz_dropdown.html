@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Print Imaginaries & Media History Mastery Quiz</title>
+<style>
+  :root {
+    --bg:        #F5EFE0;
+    --bg-soft:   #EDE4D0;
+    --card:      #FBF7EC;
+    --ink:       #2E3A3A;
+    --muted:     #6B7775;
+    --accent:    #5B8A8A;
+    --accent-d:  #406A6A;
+    --good:      #7BA77B;
+    --good-bg:   #DFEBDC;
+    --bad:       #B8746B;
+    --bad-bg:    #EFD9D3;
+    --hi:        #E8C97A;
+    --line:      #d8cfba;
+    --shadow:    0 2px 0 rgba(46,58,58,0.08), 0 6px 18px rgba(46,58,58,0.06);
+    --radius:    14px;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin:0; padding:0; }
+  body {
+    background: var(--bg); color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height:1.55; min-height:100vh; display:flex; justify-content:center;
+    padding:24px 14px 60px;
+  }
+  .wrap { width:100%; max-width:860px; }
+  header { text-align:center; margin-bottom:18px; }
+  header h1 { font-size:1.45rem; margin:0 0 4px; color:var(--accent-d); letter-spacing:.3px; }
+  header p { margin:0; color:var(--muted); font-size:.9rem; }
+  .bar { display:flex; flex-wrap:wrap; gap:10px; justify-content:space-between; align-items:center; background:var(--bg-soft); padding:9px 13px; border-radius:var(--radius); font-size:.88rem; color:var(--muted); margin-bottom:10px; }
+  .bar strong { color:var(--ink); font-weight:600; }
+  .bar .pill { background:var(--card); padding:3px 10px; border-radius:999px; border:1px solid var(--line); }
+  .jump { display:flex; flex-wrap:wrap; gap:7px; margin:0 0 12px; justify-content:center; }
+  .jump button { background:var(--card); color:var(--accent-d); border:1px solid var(--line); border-radius:10px; padding:7px 10px; font-weight:700; cursor:pointer; min-width:34px; }
+  .jump button.current { background:var(--accent); color:#fff; border-color:var(--accent-d); }
+  .jump button.done { background:var(--good-bg); border-color:var(--good); }
+  .jump button.miss { background:var(--bad-bg); border-color:var(--bad); }
+  .progress-track { width:100%; height:6px; background:var(--bg-soft); border-radius:999px; overflow:hidden; margin-bottom:16px; }
+  .progress-fill { height:100%; background:var(--accent); width:0%; transition:width .3s ease; }
+  .card { background:var(--card); border-radius:var(--radius); padding:24px 22px 20px; box-shadow:var(--shadow); }
+  .qnum { font-size:.75rem; letter-spacing:1.2px; color:var(--accent); text-transform:uppercase; margin-bottom:6px; font-weight:600; }
+  .qtype-tag { display:inline-block; margin-left:8px; padding:2px 8px; border-radius:999px; background:var(--hi); color:#6b4f1a; font-size:.68rem; font-weight:700; text-transform:uppercase; letter-spacing:.5px; }
+  .qtext { font-size:1.08rem; margin:4px 0 16px; color:var(--ink); }
+  .source { font-size:.78rem; color:var(--muted); margin-top:-8px; margin-bottom:14px; }
+  code { background:var(--hi); padding:1px 6px; border-radius:4px; font-family:"SF Mono", Menlo, Consolas, monospace; font-size:.92em; }
+  .options { display:grid; gap:9px; }
+  .opt {
+    text-align:left; background:#FFFDF6; border:1.5px solid var(--line); color:var(--ink);
+    padding:11px 13px; border-radius:10px; font-size:.96rem; cursor:pointer;
+    transition:all .15s ease; font-family:inherit; line-height:1.45; width:100%;
+    display:flex; align-items:center; white-space:normal; overflow:hidden;
+  }
+  .opt:hover:not(:disabled) { border-color:var(--accent); background:#FFFEFA; transform:translateY(-1px); }
+  .opt:disabled { cursor:default; }
+  .opt.correct, .opt.reveal { background:var(--good-bg); border-color:var(--good); color:#2f4a2f; }
+  .opt.wrong { background:var(--bad-bg); border-color:var(--bad); color:#5a2c26; }
+  .marker { display:inline-block; width:22px; height:22px; line-height:22px; border-radius:50%; background:var(--bg-soft); color:var(--muted); text-align:center; font-size:.78rem; margin-right:10px; font-weight:700; flex:0 0 auto; }
+  .opt.correct .marker, .opt.reveal .marker { background:var(--good); color:white; }
+  .opt.wrong .marker { background:var(--bad); color:white; }
+  .optText { display:inline-block; }
+  .small { color:var(--muted); font-size:.84rem; }
+
+  .select-match { display:flex; flex-direction:column; gap:10px; }
+  .select-row { display:grid; grid-template-columns:minmax(170px, 34%) 1fr; gap:10px; align-items:center; background:#FFFDF6; border:1.5px solid var(--line); border-radius:10px; padding:10px 12px; }
+  .select-term { font-weight:700; color:var(--accent-d); font-size:.94rem; }
+  .select-row select { width:100%; font:inherit; color:var(--ink); background:white; border:1.5px solid var(--line); border-radius:9px; padding:8px 10px; cursor:pointer; }
+  .select-row.correct { background:var(--good-bg); border-color:var(--good); }
+  .select-row.wrong { background:var(--bad-bg); border-color:var(--bad); }
+  .select-row.correct select { border-color:var(--good); background:#f7fff4; color:#2f4a2f; }
+  .select-row.wrong select { border-color:var(--bad); background:#fff6f3; color:#5a2c26; }
+  .select-actions { display:flex; gap:10px; flex-wrap:wrap; margin-top:13px; }
+  .dd-hint { font-size:.85rem; color:var(--accent-d); margin-bottom:14px; padding:8px 12px; background:rgba(91,138,138,.08); border-radius:8px; border-left:3px solid var(--accent); }
+  .dd-card { background:var(--card); border:1.5px solid var(--accent); color:var(--accent-d); padding:7px 12px; border-radius:8px; font-size:.9rem; cursor:pointer; font-weight:500; user-select:none; transition:all .15s ease; font-family:inherit; line-height:1.4; text-align:left; }
+  .dd-card:hover:not(:disabled) { background:#fff; }
+  .dd-card.selected { background:var(--accent); color:white; transform:scale(1.04); box-shadow:0 0 0 3px rgba(91,138,138,.25); }
+  .dd-card.correct { background:var(--good-bg); border-color:var(--good); color:#2f4a2f; cursor:default; }
+  .dd-card.wrong { background:var(--bad-bg); border-color:var(--bad); color:#5a2c26; cursor:default; }
+  .slot-target { border:2px dashed var(--line); border-radius:8px; background:var(--bg-soft); padding:5px; min-height:44px; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:border-color .15s ease; }
+  .slot-target:hover { border-color:var(--accent); }
+  .slot-target.has-card { border-style:solid; background:#fbf3df; padding:4px; }
+  .slot-target.correct { border-color:var(--good); background:var(--good-bg); border-style:solid; }
+  .slot-target.wrong { border-color:var(--bad); background:var(--bad-bg); border-style:solid; }
+  .slot-target .placeholder { color:var(--muted); font-size:.82rem; }
+  .slot-target .dd-card { width:100%; }
+  .match-list, .order-list { display:flex; flex-direction:column; gap:8px; }
+  .match-row { display:flex; align-items:center; gap:10px; }
+  .match-label { flex:1; font-size:.9rem; color:var(--ink); }
+  .match-row .slot-target { width:320px; flex:none; }
+  .order-row { display:flex; align-items:stretch; gap:10px; }
+  .order-num { width:34px; min-height:44px; border-radius:8px; background:var(--accent); color:white; display:flex; align-items:center; justify-content:center; font-weight:700; flex-shrink:0; font-size:1rem; }
+  .order-row .slot-target { flex:1; }
+  .card-bank { margin-top:14px; padding:11px 12px; background:var(--bg-soft); border-radius:10px; border:1px solid var(--line); }
+  .card-bank-label { font-size:.7rem; color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:8px; font-weight:600; }
+  .card-bank-cards { display:flex; flex-wrap:wrap; gap:6px; min-height:30px; }
+  .fillbox { display:grid; gap:10px; }
+  .fill-row { background:#FFFDF6; border:1.5px solid var(--line); border-radius:10px; padding:12px 13px; font-size:.96rem; }
+  .fill-row input { font:inherit; font-weight:600; color:var(--ink); padding:6px 8px; margin:0 4px; border-radius:8px; border:1.5px solid var(--line); background:#fff; min-width:170px; max-width:100%; }
+  .fill-row input.correct { background:var(--good-bg); border-color:var(--good); color:#2f4a2f; }
+  .feedback { margin-top:14px; padding:11px 13px; border-radius:10px; font-size:.92rem; display:none; line-height:1.5; }
+  .feedback.good { background:var(--good-bg); color:#2f4a2f; display:block; }
+  .feedback.bad { background:var(--bad-bg); color:#5a2c26; display:block; }
+  .feedback.info { background:var(--bg-soft); color:var(--ink); display:block; }
+  .actions { display:flex; gap:10px; margin-top:16px; flex-wrap:wrap; }
+  button.btn { background:var(--accent); color:#FBF7EC; border:none; padding:11px 18px; border-radius:10px; font-size:.96rem; font-weight:600; cursor:pointer; font-family:inherit; transition:background .15s ease, transform .1s ease; }
+  button.btn:hover { background:var(--accent-d); }
+  button.btn:active { transform:translateY(1px); }
+  button.btn.ghost { background:transparent; color:var(--accent-d); border:1.5px solid var(--accent); }
+  button.btn.ghost:hover { background:var(--bg-soft); }
+  .result { text-align:center; padding:12px 6px 6px; }
+  .result h2 { margin:0 0 6px; color:var(--accent-d); font-size:1.5rem; }
+  .score-big { font-size:2.6rem; font-weight:700; color:var(--ink); margin:12px 0 4px; }
+  footer { text-align:center; color:var(--muted); font-size:.78rem; margin-top:20px; }
+  @media (max-width: 560px) {
+    body { padding:14px 10px 40px; }
+    .card { padding:20px 16px 18px; }
+    .qtext { font-size:1rem; }
+    header h1 { font-size:1.25rem; }
+    .match-row { flex-direction:column; align-items:stretch; gap:4px; }
+    .select-row { grid-template-columns:1fr; gap:6px; }
+    .match-row .slot-target { width:100%; }
+    .fill-row input { width:100%; margin:8px 0 0; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Print Imaginaries & Media History Mastery Quiz</h1>
+    <p>28 questions · dropdown matching · made for a 10-question in-class quiz · key terms, arguments, differences, intersections 🌿</p>
+  </header>
+  <div class="bar">
+    <span>Round <strong id="round">1</strong></span>
+    <span class="pill">Q <strong id="qIdx">1</strong> / <strong id="qTotal">28</strong></span>
+    <span>Score <strong id="score">0</strong></span>
+    <span>Best <strong id="best">—</strong></span>
+    <span>Completed <strong id="completed">0</strong></span>
+  </div>
+  <div class="jump" id="jump"></div>
+  <div class="progress-track"><div class="progress-fill" id="progress"></div></div>
+  <div class="card" id="card"></div>
+  <footer>Print imaginaries · McLuhan · Anderson · Briggs & Burke · transport/transmission</footer>
+</div>
+<script>
+const BANK = [
+{"id":"q01","type":"mcq","title":"Gutenberg date","source":"Slide 2","prompt":"When did Johann Gutenberg of Mainz invent the printing press, according to the slide?","options":[{"text":"Approximately 1450","correct":true},{"text":"Approximately 1350","correct":false},{"text":"Approximately 1600","correct":false},{"text":"Approximately 1830","correct":false}],"explanation":"The slide gives the date as approx. 1450. This anchors the whole lecture: print becomes the hinge between manuscript culture and modern media history."},
+{"id":"q02","type":"matching","title":"Two core theorists","source":"Slides 2, 8-12","prompt":"Match each author/text to the argument you should remember.","pairs":[{"left":"McLuhan, Understanding Media","right":"print reshapes perception and society"},{"left":"Anderson, Imagined Communities","right":"print capitalism helps produce nations"},{"left":"Briggs & Burke, Social History of Media","right":"media develop inside social systems"},{"left":"Carey quotation","right":"telegraph frees messages from messengers"}],"explanation":"McLuhan stresses media form and perception; Anderson adds capitalism, language markets, and nationalism; Briggs & Burke situate media inside economic, political, cultural, and transport systems; Carey sharpens the telegraph point."},
+{"id":"q03","type":"mcq","title":"McLuhan's mechanization claim","source":"Slide 4","prompt":"For McLuhan, movable-type printing mattered because it was...","options":[{"text":"the first mechanization of a complex handicraft","correct":true},{"text":"the first electric communication network","correct":false},{"text":"the first national postal system","correct":false},{"text":"the first wireless broadcasting medium","correct":false}],"explanation":"McLuhan calls printing from movable type the first mechanization of a complex handicraft and the archetype of later mechanization."},
+{"id":"q04","type":"matching","title":"Print effects","source":"Slides 4-6","prompt":"Match each print effect to its meaning in the lecture.","pairs":[{"left":"Standardized vernaculars","right":"local speech forms become written publics"},{"left":"Stored repetition","right":"information can be reproduced reliably"},{"left":"Centralized administration","right":"states can manage at larger scale"},{"left":"Mass literacy/public education","right":"reading expands beyond elites"},{"left":"Nationalism","right":"collective identity at the scale of print"}],"explanation":"Print standardizes language, repeats information, supports administration, widens literacy, and enables a new collective identity larger than tribe yet different from empire."},
+{"id":"q05","type":"mcq","title":"Print and point of view","source":"Slide 5","prompt":"According to McLuhan, the printed book intensified which faculty and habit?","options":[{"text":"visual faculty and fixed point of view","correct":true},{"text":"auditory memory and oral storytelling","correct":false},{"text":"wireless speed and global simultaneity","correct":false},{"text":"face-to-face ritual and tribal belonging","correct":false}],"explanation":"The printed book extends the visual faculty and intensifies perspective plus a fixed point of view."},
+{"id":"q06","type":"mcq","title":"McLuhan's social list","source":"Slide 5","prompt":"Which set best matches McLuhan's social consequences of typography?","options":[{"text":"nationalism, industrialism, mass markets, universal literacy","correct":true},{"text":"radio, cinema, television, social media","correct":false},{"text":"feudalism, oral poetry, ritual memory, clan law","correct":false},{"text":"aviation, satellites, smartphones, streaming platforms","correct":false}],"explanation":"The slide lists nationalism, industrialism, mass markets, and universal literacy/education as social consequences of typography."},
+{"id":"q07","type":"mcq","title":"Electric media contrast","source":"Slides 6-7","prompt":"What do electric mass media do in McLuhan's contrast with print?","options":[{"text":"they re-tribalize humanity into a global village","correct":true},{"text":"they strengthen nationalism without resistance","correct":false},{"text":"they return society to manuscript scarcity","correct":false},{"text":"they make transportation equal to communication again","correct":false}],"explanation":"McLuhan says electric writing and speed pour others' concerns upon the human continuously, making humanity tribal once more: the global village."},
+{"id":"q08","type":"mcq","title":"Nationalism and electric media","source":"Slide 7","prompt":"Which statement captures McLuhan's view of nationalism under electric media?","options":[{"text":"nationalism still depends on press, but electric media work against it","correct":true},{"text":"nationalism disappears before print arrives","correct":false},{"text":"electric media are just stronger newspapers","correct":false},{"text":"radio and telegraph have no relation to collective identity","correct":false}],"explanation":"The slide states that nationalism as an image still depends on the press, while electric media are against it."},
+{"id":"q09","type":"fill","title":"Anderson formula","source":"Slide 9","prompt":"Fill in Anderson's core formula. Spelling matters less than meaning, little memory goblin 🧠.","sentences":[{"before":"Anderson's condensed formula is print ","after":" → nationalism.","answers":["capitalism","Capitalism"]},{"before":"Capitalism and print created monoglot mass reading ","after":".","answers":["publics","Publics"]}],"explanation":"Anderson's key addition is print capitalism: the commercial production of printed texts creates large monoglot reading publics that make national consciousness imaginable."},
+{"id":"q10","type":"matching","title":"Anderson's explosive interaction","source":"Slide 9","prompt":"Match each element in Anderson's interaction to the correct term.","pairs":[{"left":"System of production","right":"capitalism"},{"left":"Technology of communication","right":"print"},{"left":"Human condition/fatality","right":"linguistic diversity"},{"left":"Resulting reading public","right":"monoglot mass reading publics"}],"explanation":"Anderson argues nationalism becomes imaginable through the interaction of capitalism, print, and human linguistic diversity."},
+{"id":"q11","type":"mcq","title":"What Anderson adds","source":"Slide 10","prompt":"What does Anderson add to McLuhan's theory?","options":[{"text":"economic conditions and print markets behind nationalism","correct":true},{"text":"a claim that print has no social consequences","correct":false},{"text":"a theory that radio created the first nations","correct":false},{"text":"a denial that language matters to identity","correct":false}],"explanation":"Anderson keeps print central, then adds capitalism: printers sought large markets, and those markets correlated with nationalism."},
+{"id":"q12","type":"mcq","title":"Latin market saturation","source":"Slide 12","prompt":"Why did printers move toward vernacular mass markets after the Latin-reading market?","options":[{"text":"the elite Latin market became saturated","correct":true},{"text":"Latin became easier than all vernaculars","correct":false},{"text":"monoglot masses refused to read anything","correct":false},{"text":"printing became illegal across Europe","correct":false}],"explanation":"Anderson says the initial market was literate Latin-reading Europe; once saturated, the huge monoglot mass markets beckoned."},
+{"id":"q13","type":"mcq","title":"Imagined community feature","source":"Slide 12","prompt":"What is an essential feature of a nation as an imagined community?","options":[{"text":"members do not know all other members","correct":true},{"text":"members all meet daily in one place","correct":false},{"text":"members all speak exactly the same dialect orally","correct":false},{"text":"membership requires direct family kinship","correct":false}],"explanation":"A nation is imagined because members cannot know all other members, yet they imagine shared membership and national consciousness."},
+{"id":"q14","type":"matching","title":"McLuhan vs Anderson","source":"Slides 4-12","prompt":"Intersectional understanding: match the comparison point to the correct distinction.","pairs":[{"left":"Commonality","right":"both see print as central to nationalism"},{"left":"McLuhan emphasis","right":"media form changes perception and culture"},{"left":"Anderson emphasis","right":"capitalism, markets, and language publics"},{"left":"Best synthesis","right":"print works through technology plus social conditions"}],"explanation":"The exam may ask commonalities and differences. McLuhan = medium/perception. Anderson = print capitalism/language markets. Together: technology and society co-produce nationalism."},
+{"id":"q15","type":"mcq","title":"Briggs & Burke main point","source":"Slide 15","prompt":"What is the main way Briggs & Burke frame post-print media technologies?","options":[{"text":"media are entangled with economic, political, cultural, and social dynamics","correct":true},{"text":"media develop outside society and politics","correct":false},{"text":"media after print have no connection to print","correct":false},{"text":"transportation and communication never overlap","correct":false}],"explanation":"The lecture stresses that post-print media technologies were enabled by print and developed inside economic, political, cultural, and social dynamics."},
+{"id":"q16","type":"matching","title":"Post-print media list","source":"Slide 15","prompt":"Match each post-print technology to the lecture's big category.","pairs":[{"left":"Railways","right":"transport, schedules, speed, integration"},{"left":"Ships","right":"migration, mail, empire, globalization"},{"left":"Post","right":"cheap standardized letter communication"},{"left":"Telegraphy","right":"messages faster than messengers"},{"left":"Telephone","right":"real-time personal voice exchange"}],"explanation":"These technologies are not isolated inventions. They overlap as infrastructures of movement, communication, markets, governance, and imagination."},
+{"id":"q17","type":"mcq","title":"Telegraph novelty","source":"Slide 16","prompt":"What novelty did the telegraph bring?","options":[{"text":"communication over distance was no longer tied to transportation","correct":true},{"text":"books had to travel even more slowly than before","correct":false},{"text":"all messages returned to oral tribal memory","correct":false},{"text":"railways stopped being useful for communication infrastructure","correct":false}],"explanation":"The telegraph creates the leap from transportation to transmission: messages can travel faster than messengers."},
+{"id":"q18","type":"sequence","title":"From transport to transmission","source":"Slide 16","prompt":"Arrange the conceptual shift in the correct order.","items":["Before telegraphy, moving information meant moving the medium.","Books, manuscripts, tablets, tokens, and quipu had to travel physically.","Harnessable electricity enabled telegraph and telephone.","Messages could travel faster than messengers.","Communication distance became partly separated from transportation."],"explanation":"This sequence is the lecture's cleanest conceptual knife: transport no longer fully controls communication speed."},
+{"id":"q19","type":"matching","title":"Railway imaginaries","source":"Slide 17","prompt":"Match railway-related change to its meaning.","pairs":[{"left":"New perception","right":"distance, speed, and time feel different"},{"left":"Tourism","right":"travel becomes a social practice"},{"left":"Railway literature","right":"books travel through train/station networks"},{"left":"Standardized schedules","right":"time zones begin to unify"},{"left":"Two sides of the track","right":"railways physically and socially divide cities"}],"explanation":"Railways are media-like infrastructures: they reorder time, space, class divisions, literary circulation, tourism, capitalism, national integration, and imperial governance."},
+{"id":"q20","type":"mcq","title":"Railway date","source":"Slide 17","prompt":"Which railway line and date appear in the slide?","options":[{"text":"Manchester and Liverpool, 1830","correct":true},{"text":"Bombay and Thana, 1450","correct":false},{"text":"London and Paris, 1901","correct":false},{"text":"Berlin and Rome, 1876","correct":false}],"explanation":"The slide lists the railway line between Manchester and Liverpool in 1830."},
+{"id":"q21","type":"mcq","title":"First Indian railway","source":"Slide 17","prompt":"The first Indian railway in 1853 connected...","options":[{"text":"Bombay to Thana","correct":true},{"text":"Manchester to Liverpool","correct":false},{"text":"Britain to France","correct":false},{"text":"Europe to the USA","correct":false}],"explanation":"The first Indian railway was Bombay to Thana in 1853. The slide links railways to imperial governance and integration."},
+{"id":"q22","type":"matching","title":"Ships, post, and globalization","source":"Slides 19-20","prompt":"Match each topic to the exact lecture emphasis.","pairs":[{"left":"Steamships","right":"faster movement of people, goods, and mail"},{"left":"Migration","right":"Europe-USA movement"},{"left":"Imperial integration","right":"transport supports governance"},{"left":"Post stamp, Britain 1840","right":"pre-paid cheap uniform rate"},{"left":"Post service shift","right":"from elite to standardized accessible service"}],"explanation":"Ships and post show how communication and transportation overlap. Mail, commerce, migration, governance, and globalization are braided together."},
+{"id":"q23","type":"mcq","title":"Transatlantic cable","source":"Slide 19 and 21","prompt":"Which ship is connected to laying the transatlantic cable?","options":[{"text":"The Great Eastern","correct":true},{"text":"The Titanic","correct":false},{"text":"The Mayflower","correct":false},{"text":"The Queen Mary","correct":false}],"explanation":"The Great Eastern was large enough to carry the transatlantic cable. The cable was completed permanently in 1866."},
+{"id":"q24","type":"matching","title":"Telegraph facts","source":"Slide 21","prompt":"Match telegraph facts to their details.","pairs":[{"left":"Cooke and Wheatstone","right":"electric telegraph patent in 1837"},{"left":"Claude Chappe","right":"semaphore telegraphy in 1792"},{"left":"Samuel Morse","right":"Morse code developed in 1844"},{"left":"International Telegraph Union","right":"oldest international organization, founded 1865"},{"left":"Reuters","right":"news agency enabled by telegraphic reporting"}],"explanation":"Telegraphy links invention, standardization, infrastructure, news distribution, and global collaboration."},
+{"id":"q25","type":"mcq","title":"Telegraph and capitalism","source":"Slide 21","prompt":"Why was instant communication central for industrial capitalism?","options":[{"text":"it supported stock exchanges and fast market information","correct":true},{"text":"it removed the need for all markets and prices","correct":false},{"text":"it made all production local and slow","correct":false},{"text":"it prevented international standardization","correct":false}],"explanation":"The slide names stock exchanges: industrial capitalism needed fast information and coordination."},
+{"id":"q26","type":"matching","title":"Telephone, wireless, radio, gramophone","source":"Slides 22-24","prompt":"Match each medium to its memorization hook.","pairs":[{"left":"Telephone","right":"real-time voice exchange becomes personal"},{"left":"Switchboard operators","right":"feminization of communications labor"},{"left":"Wireless telegraphy","right":"telegraphy without wires, useful at sea"},{"left":"Radio","right":"first proper broadcasting medium"},{"left":"Gramophone","right":"sound is preserved and commodified"}],"explanation":"These later media extend communication into voice, maritime signaling, broadcasting, labor organization, home/office life, entertainment, and commodified sound."},
+{"id":"q27","type":"mcq","title":"Radio controversy","source":"Slide 23","prompt":"What controversy is attached to radio broadcasting in the slide?","options":[{"text":"education versus entertainment, such as broadcasting concerts","correct":true},{"text":"Latin versus vernacular book markets","correct":false},{"text":"railway tycoons versus coal mines","correct":false},{"text":"postcards versus postage stamps","correct":false}],"explanation":"Radio raised the education-versus-entertainment debate and created a need for broadcasting agencies such as the BBC."},
+{"id":"q28","type":"matching","title":"Big exam synthesis","source":"Whole slide deck","prompt":"Final boss: match each big claim to the best example. This is the real-quiz armor plating 🛡️.","pairs":[{"left":"Media reshape identity","right":"print enables nationalism; electric media global village"},{"left":"Media depend on markets","right":"print capitalism seeks mass vernacular readers"},{"left":"Media depend on infrastructure","right":"telegraph lines follow railways and cables use ships"},{"left":"Media reshape time-space","right":"railways standardize schedules; telegraph speeds messages"},{"left":"Media reproduce inequality","right":"two sides of the track; infrastructural inequality"}],"explanation":"Intersectional understanding means you can compare shared patterns and differences: technology, capitalism, language, state power, empire, labor, inequality, and imagination all move together."}
+];
+let order = [], pos = 0, score = 0, round = 1, answered = false;
+let states = {};
+let dragState = { selected:null, placements:{} };
+let currentDD = null;
+const STORE_PREFIX = 'print_imaginaries_mastery_v1_';
+const elCard = document.getElementById('card'), elQIdx = document.getElementById('qIdx'), elQTotal = document.getElementById('qTotal'), elScore = document.getElementById('score'), elRound = document.getElementById('round'), elBest = document.getElementById('best'), elCompleted = document.getElementById('completed'), elProg = document.getElementById('progress'), elJump = document.getElementById('jump');
+elQTotal.textContent = BANK.length;
+function shuffle(arr) { const a=arr.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]];} return a; }
+function escapeHTML(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function norm(s) { return String(s||'').toLowerCase().replace(/[.,;:!?()[\]{}"']/g,'').replace(/[-‐‑‒–—]/g,' ').replace(/\s+/g,' ').trim(); }
+function lsGet(k) { try { return localStorage.getItem(k); } catch(e) { return null; } }
+function lsSet(k,v) { try { localStorage.setItem(k,v); } catch(e) {} }
+function lsDel(k) { try { localStorage.removeItem(k); } catch(e) {} }
+function startRound() { order = shuffle(BANK.map((_,i)=>i)); pos=0; score=0; states={}; elScore.textContent='0'; elRound.textContent=round; elBest.textContent=lsGet(STORE_PREFIX+'best') || '—'; elCompleted.textContent=lsGet(STORE_PREFIX+'completed') || '0'; renderJump(); renderQuestion(); }
+function renderJump() { elJump.innerHTML=''; order.forEach((qi,i)=>{ const q=BANK[qi]; const st=states[q.id]; const b=document.createElement('button'); b.textContent=i+1; b.className=(i===pos?'current ':'')+(st?.answered?(st.correct?'done':'miss'):''); b.onclick=()=>{pos=i; renderQuestion();}; elJump.appendChild(b); }); }
+function currentQ() { return BANK[order[pos]]; }
+function renderQuestion() { if(pos>=order.length) return renderResult(); answered=false; dragState={selected:null,placements:{}}; currentDD=null; const item=currentQ(); elQIdx.textContent=pos+1; elProg.style.width=(pos/order.length*100)+'%'; const tagMap={mcq:'Multiple Choice',matching:'Dropdown Match',sequence:'Tap & Order',fill:'Fill In'}; let html=`<div class="qnum">Question ${pos+1} of ${order.length}<span class="qtype-tag">${tagMap[item.type]}</span></div><p class="qtext">${item.prompt}</p><div class="source">${escapeHTML(item.source)} · ${escapeHTML(item.title)}</div>`; if(item.type==='mcq') html+=renderMC_HTML(item); else if(item.type==='fill') html+=renderFill_HTML(item); else if(item.type==='matching') html+=renderSelectMatch_HTML(item); else html+=renderDD_HTML(item); html += `<div class="feedback" id="fb"></div><div class="actions" id="acts"><button class="btn ghost" onclick="prevQ()">Previous</button><button class="btn ghost" onclick="nextQ()">Next</button><button class="btn ghost" onclick="showAnswer()">Show answer</button><button class="btn ghost" onclick="resetQuestion()">Reset question</button></div>`; elCard.innerHTML=html; if(item.type==='mcq') attachMC(item); else if(item.type==='fill') attachFill(item); else if(item.type==='matching') attachSelectMatch(item); else attachDD(item); renderJump(); }
+function renderMC_HTML(item) { const idxs=shuffle(item.options.map((_,i)=>i)); item._shuf=idxs; return `<div class="options">${idxs.map((orig,i)=>`<button class="opt" data-i="${i}"><span class="marker">${String.fromCharCode(65+i)}</span><span class="optText">${escapeHTML(item.options[orig].text)}</span></button>`).join('')}</div><p class="small">Wrong choices are plausible exam traps. Read the wording slowly.</p>`; }
+function attachMC(item) { document.querySelectorAll('.opt').forEach(btn=>{ btn.onclick=()=>{ if(answered)return; answered=true; const shownIndex=+btn.dataset.i; const orig=item._shuf[shownIndex]; const ok=!!item.options[orig].correct; document.querySelectorAll('.opt').forEach((b,k)=>{b.disabled=true; if(item.options[item._shuf[k]].correct)b.classList.add('reveal');}); btn.classList.add(ok?'correct':'wrong'); mark(ok); feedback((ok?'Correct. ':'Not quite. ')+item.explanation, ok?'good':'bad'); }; }); }
+function renderFill_HTML(item) { return `<div class="fillbox">${item.sentences.map((s,i)=>`<label class="fill-row">${escapeHTML(s.before)}<input data-fill="${i}" autocomplete="off" autocapitalize="none" spellcheck="false" />${escapeHTML(s.after)}</label>`).join('')}</div><p class="small">Type the missing word or phrase. Correct blanks lock automatically.</p>`; }
+function attachFill(item) { document.querySelectorAll('input[data-fill]').forEach(inp=>{ inp.addEventListener('input', checkFill); }); }
+function checkFill() { const item=currentQ(); const inputs=[...document.querySelectorAll('input[data-fill]')]; let allCorrect=true, allFilled=true; inputs.forEach(inp=>{ const s=item.sentences[+inp.dataset.fill]; const ok=s.answers.some(a=>norm(a)===norm(inp.value)); if(ok){inp.classList.add('correct'); inp.disabled=true;} if(!ok) allCorrect=false; if(!inp.value.trim()) allFilled=false; }); if(allCorrect){ answered=true; mark(true); feedback('Correct. '+item.explanation,'good'); } else if(allFilled){ feedback('Keep going. One or more blanks still need revision.','info'); } }
+
+function renderSelectMatch_HTML(item) {
+  const optionOrder = shuffle(item.pairs.map((_,i)=>i));
+  item._matchOptions = optionOrder;
+  return `<div class="dd-hint">🌿 Choose the correct definition from each dropdown. When every row has a choice, press Check answers.</div><div class="select-match">${item.pairs.map((p,i)=>`<div class="select-row" data-row="${i}"><div class="select-term">${escapeHTML(p.left)}</div><select data-match="${i}"><option value="">Choose the best match...</option>${optionOrder.map(idx=>`<option value="${idx}">${escapeHTML(item.pairs[idx].right)}</option>`).join('')}</select></div>`).join('')}</div><div class="select-actions"><button class="btn" onclick="checkSelectMatch()">Check answers</button></div><p class="small">No dragging now: term on the left, definition dropdown on the right. Tiny exam dojo, less finger acrobatics 🥢.</p>`;
+}
+function attachSelectMatch(item) {
+  document.querySelectorAll('select[data-match]').forEach(sel=>{
+    sel.addEventListener('change',()=>{
+      if(answered) return;
+      const allChosen=[...document.querySelectorAll('select[data-match]')].every(s=>s.value!=='');
+      if(allChosen) feedback('All rows have choices. Press Check answers to grade this set.','info');
+    });
+  });
+}
+function checkSelectMatch() {
+  const item=currentQ();
+  if(answered || item.type!=='matching') return;
+  const selects=[...document.querySelectorAll('select[data-match]')];
+  const allChosen=selects.every(s=>s.value!=='');
+  if(!allChosen){ feedback('Choose one definition for every term first.','info'); return; }
+  let allCorrect=true;
+  selects.forEach(sel=>{
+    const row=sel.closest('.select-row');
+    const termIndex=+sel.dataset.match;
+    const chosenIndex=+sel.value;
+    const ok=termIndex===chosenIndex;
+    row.classList.add(ok?'correct':'wrong');
+    if(!ok) allCorrect=false;
+    sel.disabled=true;
+  });
+  answered=true;
+  mark(allCorrect);
+  feedback((allCorrect?'Correct. ':'Not quite. ')+item.explanation, allCorrect?'good':'bad');
+}
+function setupDD(item) { let cards, slots, slotOrder; if(item.type==='matching'){ cards=item.pairs.map((p,i)=>({id:'c'+i,text:p.right,correctSlot:'s'+i})); slots=item.pairs.map((p,i)=>({id:'s'+i,label:p.left,multi:false})); slotOrder=shuffle(slots.map(s=>s.id)); } else { cards=item.items.map((t,i)=>({id:'c'+i,text:t,correctSlot:'s'+i})); slots=item.items.map((_,i)=>({id:'s'+i,label:String(i+1),multi:false})); slotOrder=slots.map(s=>s.id); } return {cards,slots,slotOrder,cardOrder:shuffle(cards.map(c=>c.id)),type:item.type}; }
+function renderDD_HTML(item) { currentDD=setupDD(item); const hint=item.type==='matching'?'Tap a card, then tap its matching slot. Tap a placed card to return it.':'Tap a card, then tap the correct numbered step. Tap a placed card to return it.'; return `<div class="dd-hint">🌿 ${hint}</div><div id="ddArea"></div>`; }
+function attachDD(item) { renderDDArea(item); }
+function renderDDArea(item) { const area=document.getElementById('ddArea'); let h=''; if(currentDD.type==='matching') h+=renderMatchSlots(); else h+=renderOrderSlots(); const inBank=currentDD.cardOrder.filter(cid=>!dragState.placements[cid]); h+=`<div class="card-bank"><div class="card-bank-label">Cards (${inBank.length} left)</div><div class="card-bank-cards">${inBank.length?inBank.map(cid=>{const c=currentDD.cards.find(x=>x.id===cid); const sel=dragState.selected===cid?' selected':''; return `<button class="dd-card${sel}" data-card="${cid}">${escapeHTML(c.text)}</button>`;}).join(''):'<span class="small">All placed.</span>'}</div></div>`; area.innerHTML=h; area.querySelectorAll('.dd-card').forEach(el=>{el.onclick=e=>{e.stopPropagation(); onCardClick(item,el.dataset.card);}}); area.querySelectorAll('[data-slot]').forEach(el=>{el.onclick=()=>onSlotClick(item,el.dataset.slot);}); autoCheckDD(item,false); }
+function renderMatchSlots() { return `<div class="match-list">${currentDD.slotOrder.map(sid=>{const slot=currentDD.slots.find(s=>s.id===sid); return `<div class="match-row"><div class="match-label">${escapeHTML(slot.label)}</div>${slotHTML(sid)}</div>`;}).join('')}</div>`; }
+function renderOrderSlots() { return `<div class="order-list">${currentDD.slotOrder.map(sid=>{const slot=currentDD.slots.find(s=>s.id===sid); return `<div class="order-row"><div class="order-num">${slot.label}</div>${slotHTML(sid)}</div>`;}).join('')}</div>`; }
+function slotHTML(sid) { const cardId=Object.keys(dragState.placements).find(cid=>dragState.placements[cid]===sid); if(cardId){const c=currentDD.cards.find(x=>x.id===cardId); return `<div class="slot-target has-card" data-slot="${sid}"><button class="dd-card" data-card="${cardId}">${escapeHTML(c.text)}</button></div>`;} return `<div class="slot-target" data-slot="${sid}"><span class="placeholder">tap to place</span></div>`; }
+function onCardClick(item,cardId) { if(answered)return; if(dragState.placements[cardId]){ delete dragState.placements[cardId]; dragState.selected=null; } else { dragState.selected=(dragState.selected===cardId)?null:cardId; } renderDDArea(item); }
+function onSlotClick(item,slotId) { if(answered||!dragState.selected)return; Object.keys(dragState.placements).forEach(cid=>{if(dragState.placements[cid]===slotId)delete dragState.placements[cid];}); dragState.placements[dragState.selected]=slotId; dragState.selected=null; renderDDArea(item); }
+function autoCheckDD(item,force) { if(!currentDD)return; const allPlaced=currentDD.cards.every(c=>dragState.placements[c.id]); if(!allPlaced&&!force)return; const results={}; let count=0; currentDD.cards.forEach(c=>{const ok=dragState.placements[c.id]===c.correctSlot; results[c.id]=ok; if(ok)count++;}); const all=count===currentDD.cards.length; if(allPlaced){ answered=true; mark(all); renderDDFeedback(results); feedback((all?'Correct. ':'Not quite. ')+item.explanation, all?'good':'bad'); } }
+function renderDDFeedback(results) { document.querySelectorAll('.slot-target').forEach(slot=>{ const card=slot.querySelector('.dd-card'); if(card){ const ok=results[card.dataset.card]; slot.classList.add(ok?'correct':'wrong'); card.classList.add(ok?'correct':'wrong'); card.disabled=true; } }); }
+function mark(ok) { const item=currentQ(); states[item.id]={answered:true,correct:ok}; score=Object.values(states).filter(s=>s.answered&&s.correct).length; elScore.textContent=score; renderJump(); }
+function feedback(msg,type) { const f=document.getElementById('fb'); f.className='feedback '+type; f.textContent=msg; }
+function showAnswer() { const item=currentQ(); if(item.type==='mcq'){ document.querySelectorAll('.opt').forEach((b,k)=>{ b.disabled=true; if(item.options[item._shuf[k]].correct)b.classList.add('reveal'); }); } else if(item.type==='fill'){ document.querySelectorAll('input[data-fill]').forEach(inp=>{ const s=item.sentences[+inp.dataset.fill]; inp.value=s.answers[0]; inp.classList.add('correct'); inp.disabled=true; }); } else if(item.type==='matching'){ document.querySelectorAll('select[data-match]').forEach(sel=>{ const idx=+sel.dataset.match; sel.value=String(idx); sel.disabled=true; sel.closest('.select-row').classList.add('correct'); }); } else { currentDD.cards.forEach(c=>dragState.placements[c.id]=c.correctSlot); renderDDArea(item); document.querySelectorAll('.slot-target').forEach(slot=>slot.classList.add('correct')); document.querySelectorAll('.dd-card').forEach(card=>{card.classList.add('correct'); card.disabled=true;}); } answered=true; mark(false); feedback('Answer shown. Reset this question and solve it again from memory. '+item.explanation,'info'); }
+function resetQuestion() { const item=currentQ(); delete states[item.id]; renderQuestion(); }
+function prevQ() { pos=(pos-1+order.length)%order.length; renderQuestion(); }
+function nextQ() { pos=(pos+1)%order.length; renderQuestion(); }
+function renderResult() { elProg.style.width='100%'; const total=order.length; const pct=Math.round(score/total*100); const best=parseInt(lsGet(STORE_PREFIX+'best')||'0',10); if(score>best)lsSet(STORE_PREFIX+'best',String(score)); const completed=parseInt(lsGet(STORE_PREFIX+'completed')||'0',10)+1; lsSet(STORE_PREFIX+'completed',String(completed)); elBest.textContent=lsGet(STORE_PREFIX+'best') || '—'; elCompleted.textContent=completed; elCard.innerHTML=`<div class="result"><h2>Round complete</h2><div class="score-big">${score} / ${total}</div><p>${pct}% correct</p><p class="small">For a 10-question in-class quiz, aim for 26/28 or higher twice in a row. That means the concepts have moved from “I recognize this” to “I can retrieve this under pressure.”</p><div class="actions" style="justify-content:center"><button class="btn" onclick="round++;startRound()">Play another round ↻</button><button class="btn ghost" onclick="lsDel(STORE_PREFIX+'best'); lsDel(STORE_PREFIX+'completed'); startRound()">Reset saved progress</button></div></div>`; }
+startRound();
+</script>
+</body>
+</html>
