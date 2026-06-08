@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>英検1級 単語クイズ ｜ 1601–1900</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#FBF3E4; --ink:#1E1B16; --line:#1E1B16;
+  --correct:#1F9D55; --correct-bg:#D7F2DF;
+  --wrong:#E23E3E; --wrong-bg:#FBDADA;
+  --shadow:6px 6px 0 var(--line);
+  --jp:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic","Noto Sans JP",sans-serif;
+  --disp:"Fraunces",Georgia,serif;
+  --mono:"Space Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--paper);
+  background-image:radial-gradient(var(--line) 0.6px, transparent 0.6px);
+  background-size:22px 22px;
+  color:var(--ink); font-family:var(--jp);
+  -webkit-font-smoothing:antialiased; line-height:1.5;
+  padding-bottom:120px;
+}
+header{
+  position:sticky; top:0; z-index:50;
+  background:var(--paper); border-bottom:3px solid var(--line);
+}
+.bar{max-width:1100px;margin:0 auto;padding:14px 18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.logo{font-family:var(--disp);font-weight:900;font-size:1.5rem;letter-spacing:-.02em;line-height:1}
+.logo small{display:block;font-family:var(--mono);font-size:.62rem;font-weight:700;letter-spacing:.18em;color:#8a7a5c;margin-top:3px}
+.scorebox{margin-left:auto;display:flex;gap:8px;align-items:center;font-family:var(--mono);font-weight:700;font-size:.8rem}
+.chip{border:2.5px solid var(--line);background:#fff;padding:5px 10px;border-radius:999px;box-shadow:3px 3px 0 var(--line)}
+.chip b{color:var(--accent,#F4633A)}
+.pager{max-width:1100px;margin:0 auto;padding:0 12px 12px;display:flex;gap:7px;overflow-x:auto;scrollbar-width:thin}
+.pager button{
+  flex:0 0 auto;font-family:var(--mono);font-weight:700;font-size:.82rem;
+  border:2.5px solid var(--line);background:#fff;color:var(--ink);
+  width:38px;height:38px;border-radius:10px;cursor:pointer;transition:transform .08s,box-shadow .08s;
+}
+.pager button:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--line)}
+.pager button.on{background:var(--accent);color:#fff;box-shadow:3px 3px 0 var(--line);transform:translate(-1px,-1px)}
+.pager .sep{flex:0 0 auto;align-self:center;width:3px;height:26px;background:var(--line);margin:0 4px;border-radius:2px}
+.pager button.ch{width:auto;padding:0 12px;background:#1E1B16;color:#FBF3E4}
+.pager button.ch.on{background:var(--accent);color:#fff}
+main{max-width:1100px;margin:0 auto;padding:22px 18px 0}
+.pagehead{display:flex;align-items:flex-end;gap:16px;margin-bottom:18px;flex-wrap:wrap}
+.pagehead .big{font-family:var(--disp);font-weight:900;font-size:2.6rem;line-height:.95;letter-spacing:-.02em}
+.pagehead .tag{font-family:var(--mono);font-weight:700;font-size:.72rem;letter-spacing:.12em;background:var(--accent);color:#fff;padding:6px 12px;border:2.5px solid var(--line);border-radius:8px;box-shadow:var(--shadow)}
+.pagehead .sub{font-size:.9rem;color:#7a6c50}
+.reshuffle{margin-left:auto;font-family:var(--mono);font-weight:700;font-size:.82rem;border:2.5px solid var(--line);background:#fff;padding:9px 16px;border-radius:10px;cursor:pointer;box-shadow:var(--shadow);transition:transform .08s}
+.reshuffle:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 var(--line)}
+.reshuffle:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--line)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px}
+.card{
+  background:#fff;border:3px solid var(--line);border-radius:16px;
+  box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column;
+}
+.card .top{padding:14px 16px 10px;border-bottom:3px solid var(--line);position:relative;background:var(--accent-soft,#fff)}
+.card .qno{position:absolute;top:10px;right:12px;font-family:var(--mono);font-weight:700;font-size:.62rem;color:#9a8a6a}
+.card .word{font-family:var(--disp);font-weight:900;font-size:1.85rem;letter-spacing:-.02em;line-height:1.05;word-break:break-word}
+.card .ipa{font-family:var(--mono);font-size:.78rem;color:#8a7a5c;margin-top:3px}
+.opts{display:flex;flex-direction:column;gap:0;padding:0}
+.opt{
+  text-align:left;font-family:var(--jp);font-size:.98rem;color:var(--ink);
+  background:#fff;border:none;border-top:2px solid #eadfca;
+  padding:13px 15px 13px 44px;cursor:pointer;position:relative;transition:background .12s;
+  line-height:1.35;
+}
+.opt:first-child{border-top:none}
+.opt:hover:not(:disabled){background:#FFF3D6}
+.opt .mk{position:absolute;left:13px;top:50%;transform:translateY(-50%);width:22px;height:22px;border:2.5px solid var(--line);border-radius:6px;font-family:var(--mono);font-weight:700;font-size:.72rem;display:flex;align-items:center;justify-content:center;background:#fff}
+.opt.correct{background:var(--correct-bg)}
+.opt.correct .mk{background:var(--correct);color:#fff;border-color:var(--correct)}
+.opt.wrong{background:var(--wrong-bg)}
+.opt.wrong .mk{background:var(--wrong);color:#fff;border-color:var(--wrong)}
+.opt:disabled{cursor:default}
+.empty{text-align:center;color:#9a8a6a;padding:40px;font-family:var(--mono)}
+footer{position:fixed;bottom:0;left:0;right:0;background:var(--ink);color:var(--paper);border-top:3px solid var(--line);z-index:50}
+.fbar{max-width:1100px;margin:0 auto;padding:12px 18px;display:flex;align-items:center;gap:14px}
+.fbar .navb{font-family:var(--mono);font-weight:700;font-size:.8rem;border:2.5px solid var(--paper);background:transparent;color:var(--paper);padding:9px 16px;border-radius:10px;cursor:pointer;transition:transform .08s}
+.fbar .navb:hover:not(:disabled){background:var(--paper);color:var(--ink)}
+.fbar .navb:disabled{opacity:.3;cursor:default}
+.fbar .meter{flex:1;height:14px;border:2.5px solid var(--paper);border-radius:999px;overflow:hidden;background:#3a342a}
+.fbar .meter i{display:block;height:100%;width:0;background:var(--accent);transition:width .3s}
+.fbar .pct{font-family:var(--mono);font-weight:700;font-size:.82rem;min-width:64px;text-align:right}
+@media(max-width:560px){
+  .pagehead .big{font-size:2rem}
+  .card .word{font-size:1.55rem}
+  .grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="bar">
+    <div class="logo">EIKEN 1級 WORD QUIZ<small>RANK&nbsp;C ／ NO.&nbsp;1601–1900 ／ 300 WORDS</small></div>
+    <div class="scorebox">
+      <span class="chip">SCORE <b id="sCorrect">0</b>／<span id="sAns">0</span></span>
+    </div>
+  </div>
+  <div class="pager" id="pager"></div>
+</header>
+<main>
+  <div class="pagehead">
+    <div class="big" id="phBig">PAGE 01</div>
+    <div class="tag" id="phTag">PRACTICE</div>
+    <div class="sub" id="phSub"></div>
+    <button class="reshuffle" id="reshuffle">↻ 再シャッフル</button>
+  </div>
+  <div class="grid" id="grid"></div>
+</main>
+<footer>
+  <div class="fbar">
+    <button class="navb" id="prev">◀ 前へ</button>
+    <div class="meter"><i id="meter"></i></div>
+    <span class="pct" id="pct">0%</span>
+    <button class="navb" id="next">次へ ▶</button>
+  </div>
+</footer>
+<script>
+const DATA = [{"n": 1601, "w": "inaugurate", "p": "[ɪnɔ́ːɡjərèɪt]", "a": "を（正式に）開始する"}, {"n": 1602, "w": "rectify", "p": "[réktɪfàɪ]", "a": "を修正する"}, {"n": 1603, "w": "implore", "p": "[ɪmplɔ́ːr]", "a": "に懇願する"}, {"n": 1604, "w": "muster", "p": "[mʌ́stər]", "a": "を集める、を奮い起こす"}, {"n": 1605, "w": "recuperate", "p": "[rɪkjúːpərèɪt]", "a": "回復する"}, {"n": 1606, "w": "validate", "p": "[vǽlɪdèɪt]", "a": "を認可する、を認証する"}, {"n": 1607, "w": "mollify", "p": "[mɑ́(ː)lɪfàɪ]", "a": "（怒りなど）を和らげる"}, {"n": 1608, "w": "modulate", "p": "[mɑ́(ː)dʒəlèɪt]", "a": "（声）の調子を変える"}, {"n": 1609, "w": "subjugate", "p": "[sʌ́bdʒuɡèɪt]", "a": "を征服する、を隷属させる"}, {"n": 1610, "w": "torment", "p": "[tɔːrmént]", "a": "をひどく苦しめる、を悩ます"}, {"n": 1611, "w": "rebuff", "p": "[rɪbʌ́f]", "a": "を拒絶する"}, {"n": 1612, "w": "reprimand", "p": "[réprɪmæ̀nd]", "a": "を叱責する"}, {"n": 1613, "w": "ostracize", "p": "[ɑ́(ː)strəsàɪz]", "a": "を追放する、を排斥する"}, {"n": 1614, "w": "revoke", "p": "[rɪvóUk]", "a": "を取り消す"}, {"n": 1615, "w": "heave", "p": "[hiːv]", "a": "（重い物）を持ち上げる、引き上げる"}, {"n": 1616, "w": "wrench", "p": "[rentʃ]", "a": "をねじる、を捻挫する、を歪曲する"}, {"n": 1617, "w": "tally", "p": "[tǽli]", "a": "符合する、を集計する"}, {"n": 1618, "w": "tout", "p": "[taUt]", "a": "を褒めちぎる、を押し売りする"}, {"n": 1619, "w": "veer", "p": "[vɪər]", "a": "（急に）進路を変える、（政策などが）転換する"}, {"n": 1620, "w": "wince", "p": "[wɪns]", "a": "顔をしかめる、たじろぐ"}, {"n": 1621, "w": "procure", "p": "[prəkjÚər]", "a": "を入手する、を調達する"}, {"n": 1622, "w": "scrawl", "p": "[skrɔːl]", "a": "をぞんざいに書く"}, {"n": 1623, "w": "predominate", "p": "[prɪdɑ́(ː)mɪnèɪt]", "a": "（数量などの点で）優位を占める、優勢である"}, {"n": 1624, "w": "suffocate", "p": "[sʌ́fəkèɪt]", "a": "窒息（死）する"}, {"n": 1625, "w": "smother", "p": "[smʌ́ðər]", "a": "（火）を覆って消す、を窒息（死）させる"}, {"n": 1626, "w": "smuggle", "p": "[smʌ́ɡl]", "a": "を密輸する"}, {"n": 1627, "w": "hibernate", "p": "[háɪbərnèɪt]", "a": "冬眠する"}, {"n": 1628, "w": "loom", "p": "[luːm]", "a": "ぼんやり現れる"}, {"n": 1629, "w": "rumble", "p": "[rʌ́mbl]", "a": "ごろごろと鳴る"}, {"n": 1630, "w": "topple", "p": "[tɑ́(ː)pl]", "a": "バランスが崩れて倒れる"}, {"n": 1631, "w": "jostle", "p": "[dʒɑ́(ː)sl]", "a": "を押しのける"}, {"n": 1632, "w": "resuscitate", "p": "[rɪsʌ́sɪtèɪt]", "a": "を生き返らせる、を復活させる"}, {"n": 1633, "w": "lurch", "p": "[ləːrtʃ]", "a": "千鳥足で歩く"}, {"n": 1634, "w": "rankle", "p": "[rǽŋkl]", "a": "を（長い間）いら立たせる、を苦しめる"}, {"n": 1635, "w": "plunder", "p": "[plʌ́ndər]", "a": "を略奪する"}, {"n": 1636, "w": "extricate", "p": "[ékstrɪkèɪt]", "a": "を救い出す"}, {"n": 1637, "w": "gnaw", "p": "[nɔː]", "a": "かじって穴を開ける"}, {"n": 1638, "w": "foment", "p": "[foUmént]", "a": "を助長する、を扇動する"}, {"n": 1639, "w": "gist", "p": "[dʒɪst]", "a": "要点、主旨"}, {"n": 1640, "w": "viability", "p": "[vàɪəbÍlət̬i]", "a": "実現可能性"}, {"n": 1641, "w": "requisite", "p": "[rékwɪzɪt]", "a": "必要条件"}, {"n": 1642, "w": "prerequisite", "p": "[priːrékwəzɪt]", "a": "（前もって）必要なもの、前提条件"}, {"n": 1643, "w": "pundit", "p": "[pʌ́ndɪt]", "a": "専門家"}, {"n": 1644, "w": "recluse", "p": "[rékluːs]", "a": "隠遁者"}, {"n": 1645, "w": "prodigy", "p": "[prɑ́(ː)dədʒi]", "a": "神童"}, {"n": 1646, "w": "offshoot", "p": "[ɔ́(ː)fʃùːt]", "a": "派生物、子会社"}, {"n": 1647, "w": "perk", "p": "[pəːrk]", "a": "（給料以外の）手当、特権"}, {"n": 1648, "w": "prognosis", "p": "[prɑ(ː)ɡnóUsəs]", "a": "（病気の）予後"}, {"n": 1649, "w": "penchant", "p": "[péntʃənt]", "a": "傾向、好み"}, {"n": 1650, "w": "grievance", "p": "[ɡríːvəns]", "a": "不満、苦情"}, {"n": 1651, "w": "mayhem", "p": "[méɪhèm]", "a": "大混乱、暴力沙汰"}, {"n": 1652, "w": "impediment", "p": "[ɪmpédɪmənt]", "a": "障害"}, {"n": 1653, "w": "hassle", "p": "[hǽsl]", "a": "口論、わずらわしいこと"}, {"n": 1654, "w": "vandalism", "p": "[vǽndəlɪ̀zm]", "a": "（芸術品・公共物などの）破壊"}, {"n": 1655, "w": "reprisal", "p": "[rɪpráɪzəl]", "a": "報復"}, {"n": 1656, "w": "upheaval", "p": "[ʌphíːvəl]", "a": "（社会・政治などの）激変、（地殻の）隆起"}, {"n": 1657, "w": "quandary", "p": "[kwɑ́(ː)ndəri]", "a": "板挟み、苦境"}, {"n": 1658, "w": "ramification", "p": "[ræ̀mɪfɪkéɪʃən]", "a": "派生的な問題、分枝"}, {"n": 1659, "w": "tantrum", "p": "[tǽntrəm]", "a": "（特に子供の）かんしゃく、不機嫌"}, {"n": 1660, "w": "proceeds", "p": "[próUsiːdz]", "a": "収益、収入"}, {"n": 1661, "w": "matrimony", "p": "[mǽtrəmòUni]", "a": "結婚"}, {"n": 1662, "w": "lineage", "p": "[lɪ́niɪdʒ]", "a": "家系、血統"}, {"n": 1663, "w": "obscurity", "p": "[əbskjÚərət̬i]", "a": "世に知られていないこと"}, {"n": 1664, "w": "mirage", "p": "[mərɑ́ːʒ]", "a": "幻影、蜃気楼"}, {"n": 1665, "w": "pendulum", "p": "[péndʒələm]", "a": "（時計の）振り子"}, {"n": 1666, "w": "rendition", "p": "[rendɪ́ʃən]", "a": "演奏、翻訳"}, {"n": 1667, "w": "milestone", "p": "[máɪlstòUn]", "a": "画期的な出来事"}, {"n": 1668, "w": "insurrection", "p": "[ɪ̀nsərékʃən]", "a": "暴動、反乱"}, {"n": 1669, "w": "manifest", "p": "[mǽnɪfèst]", "a": "明らかな"}, {"n": 1670, "w": "tantamount", "p": "[tǽnt̬əmàUnt]", "a": "等しい"}, {"n": 1671, "w": "impervious", "p": "[ɪmpə́ːrviəs]", "a": "影響されない"}, {"n": 1672, "w": "inept", "p": "[ɪnépt]", "a": "能力に欠ける"}, {"n": 1673, "w": "meticulous", "p": "[mətɪ́kjUləs]", "a": "細かいことに気を遣う"}, {"n": 1674, "w": "impeccable", "p": "[ɪmpékəbl]", "a": "申し分のない"}, {"n": 1675, "w": "intangible", "p": "[ɪntǽndʒəbl]", "a": "不可解な、無形の"}, {"n": 1676, "w": "inquisitive", "p": "[ɪnkwÍzət̬ɪv]", "a": "好奇心が強い"}, {"n": 1677, "w": "resplendent", "p": "[rɪspléndənt]", "a": "光輝くばかりの、まばゆい"}, {"n": 1678, "w": "tenacious", "p": "[tɪnéɪʃəs]", "a": "粘り強い"}, {"n": 1679, "w": "morbid", "p": "[mɔ́ːrbɪd]", "a": "病的な"}, {"n": 1680, "w": "tepid", "p": "[tépɪd]", "a": "生ぬるい、熱意のない"}, {"n": 1681, "w": "hygienic", "p": "[hàɪdʒɪénɪk]", "a": "衛生的な"}, {"n": 1682, "w": "palatable", "p": "[pǽlət̬əbl]", "a": "美味な、口に合う、好ましい"}, {"n": 1683, "w": "innocuous", "p": "[ɪnɑ́(ː)kjuəs]", "a": "悪意のない"}, {"n": 1684, "w": "insular", "p": "[ɪ́nsələr]", "a": "偏狭な、（島のように）孤立した"}, {"n": 1685, "w": "uncouth", "p": "[ʌ̀nkúːθ]", "a": "粗野な、ぎこちない"}, {"n": 1686, "w": "somber", "p": "[sɑ́(ː)mbər]", "a": "重苦しい、薄暗い"}, {"n": 1687, "w": "sedentary", "p": "[sédəntèri]", "a": "座りがちの、ほとんど体を動かさない"}, {"n": 1688, "w": "nonchalant", "p": "[nɑ̀(ː)nʃəlɑ́ːnt]", "a": "平然としている"}, {"n": 1689, "w": "stagnant", "p": "[stǽɡnənt]", "a": "よどんだ、停滞した、不景気の"}, {"n": 1690, "w": "propitious", "p": "[prəpɪ́ʃəs]", "a": "好都合の"}, {"n": 1691, "w": "placid", "p": "[plǽsɪd]", "a": "穏やかな"}, {"n": 1692, "w": "gallant", "p": "[ɡǽlənt]", "a": "勇敢な、堂々とした"}, {"n": 1693, "w": "extraterrestrial", "p": "[èkstrətəréstriəl]", "a": "地球外の"}, {"n": 1694, "w": "incongruous", "p": "[ɪnkɑ́(ː)ŋɡruəs]", "a": "場違いな、不適切な"}, {"n": 1695, "w": "insipid", "p": "[ɪnsÍpɪd]", "a": "退屈な、味のない"}, {"n": 1696, "w": "indelible", "p": "[ɪndéləbl]", "a": "消すことのできない"}, {"n": 1697, "w": "heinous", "p": "[héɪnəs]", "a": "極悪非道の"}, {"n": 1698, "w": "indignant", "p": "[ɪndÍɡnənt]", "a": "憤慨した"}, {"n": 1699, "w": "furtive", "p": "[fə́ːrt̬ɪv]", "a": "人目を盗んでの、こそこそした"}, {"n": 1700, "w": "haphazardly", "p": "[hæ̀phǽzərdli]", "a": "無計画に"}, {"n": 1701, "w": "pulverize", "p": "[pʌ́lvəràɪz]", "a": "を粉砕する"}, {"n": 1702, "w": "reprieve", "p": "[rɪpríːv]", "a": "を一時的に救う、の刑の執行を猶予する"}, {"n": 1703, "w": "rescind", "p": "[rɪsÍnd]", "a": "を撤回する、を無効にする"}, {"n": 1704, "w": "scour", "p": "[skaUər]", "a": "（場所）を捜し回る、駆け巡る"}, {"n": 1705, "w": "pervade", "p": "[pərvéɪd]", "a": "の隅々に広がる、にまん延する"}, {"n": 1706, "w": "prod", "p": "[prɑ(ː)d]", "a": "を駆り立てる"}, {"n": 1707, "w": "sojourn", "p": "[sóUdʒəːrn]", "a": "滞在する"}, {"n": 1708, "w": "parry", "p": "[pǽri]", "a": "（攻撃・質問など）をかわす"}, {"n": 1709, "w": "procrastinate", "p": "[prəkrǽstɪnèɪt]", "a": "先延ばしにする"}, {"n": 1710, "w": "inundate", "p": "[ɪ́nʌndèɪt]", "a": "を水浸しにする、に殺到する"}, {"n": 1711, "w": "chuckle", "p": "[tʃʌ́kl]", "a": "くすくす笑う"}, {"n": 1712, "w": "nurture", "p": "[nə́ːrtʃər]", "a": "を育てる、（考えなど）を抱く"}, {"n": 1713, "w": "orient", "p": "[ɔ́ːriènt]", "a": "（関心など）を向ける"}, {"n": 1714, "w": "propel", "p": "[prəpél]", "a": "を進ませる、を推進する"}, {"n": 1715, "w": "stitch", "p": "[stɪtʃ]", "a": "（傷口など）を縫い合わせる"}, {"n": 1716, "w": "tilt", "p": "[tɪlt]", "a": "傾く、を傾ける"}, {"n": 1717, "w": "tumble", "p": "[tʌ́mbl]", "a": "転がり落ちる、転ぶ"}, {"n": 1718, "w": "abduct", "p": "[æbdʌ́kt]", "a": "を誘拐する、を拉致する"}, {"n": 1719, "w": "despise", "p": "[dɪspáɪz]", "a": "を軽蔑する、をひどく嫌う"}, {"n": 1720, "w": "falter", "p": "[fɔ́ːltər]", "a": "勢いがなくなる、弱る、口ごもる"}, {"n": 1721, "w": "salvage", "p": "[sǽlvɪdʒ]", "a": "（名声など）を回復する、（貴重なもの）を救う"}, {"n": 1722, "w": "wade", "p": "[weɪd]", "a": "（水の中を）歩く、（川などを）歩いて渡る"}, {"n": 1723, "w": "whine", "p": "[hwaɪn]", "a": "泣き言を言う"}, {"n": 1724, "w": "flinch", "p": "[flɪntʃ]", "a": "びくっとする、たじろぐ"}, {"n": 1725, "w": "fray", "p": "[freɪ]", "a": "いら立つ、（神経などが）すり減る"}, {"n": 1726, "w": "trudge", "p": "[trʌdʒ]", "a": "重い足取りで歩く"}, {"n": 1727, "w": "twitch", "p": "[twɪtʃ]", "a": "ぴくぴく動く、引きつる"}, {"n": 1728, "w": "delude", "p": "[dɪlúːd]", "a": "Ａを欺いてＢをさせる"}, {"n": 1729, "w": "demoralize", "p": "[dɪmɔ́(ː)rəlàɪz]", "a": "の士気をくじく"}, {"n": 1730, "w": "eavesdrop", "p": "[íːvzdrɑ̀(ː)p]", "a": "盗み聞きする、立ち聞きする"}, {"n": 1731, "w": "embellish", "p": "[ɪmbélɪʃ]", "a": "を潤色する、を粉飾する"}, {"n": 1732, "w": "imbue", "p": "[ɪmbjúː]", "a": "に吹き込む"}, {"n": 1733, "w": "paucity", "p": "[pɔ́ːsət̬i]", "a": "不足、欠乏"}, {"n": 1734, "w": "rapport", "p": "[ræpɔ́ːr]", "a": "（調和した）関係"}, {"n": 1735, "w": "outcry", "p": "[áUtkràɪ]", "a": "激しい抗議、叫び声"}, {"n": 1736, "w": "premonition", "p": "[prèmənɪ́ʃən]", "a": "（悪い）予感、（悪い）前兆、予告"}, {"n": 1737, "w": "renunciation", "p": "[rɪnʌ̀nsiéɪʃən]", "a": "放棄"}, {"n": 1738, "w": "prophecy", "p": "[prɑ́(ː)fəsi]", "a": "予言"}, {"n": 1739, "w": "vestige", "p": "[véstɪdʒ]", "a": "名残"}, {"n": 1740, "w": "periphery", "p": "[pərɪ́fəri]", "a": "周囲、外縁（地域）"}, {"n": 1741, "w": "sabotage", "p": "[sǽbətɑ̀ːʒ]", "a": "（労働争議の際などの）破壊行為、妨害"}, {"n": 1742, "w": "shackle", "p": "[ʃǽkl]", "a": "（～）手かせ、足かせ、拘束"}, {"n": 1743, "w": "spree", "p": "[spriː]", "a": "浮かれ騒ぎ"}, {"n": 1744, "w": "zeal", "p": "[ziːl]", "a": "熱心さ、熱意"}, {"n": 1745, "w": "allegiance", "p": "[əlíːdʒəns]", "a": "忠誠、忠義"}, {"n": 1746, "w": "aspiration", "p": "[æ̀spəréɪʃən]", "a": "願望、熱望"}, {"n": 1747, "w": "awe", "p": "[ɔː]", "a": "畏敬、畏怖"}, {"n": 1748, "w": "backdrop", "p": "[bǽkdrɑ̀(ː)p]", "a": "（事件などの）背景"}, {"n": 1749, "w": "bureaucrat", "p": "[bjÚərəkræ̀t]", "a": "官僚、役人"}, {"n": 1750, "w": "collateral", "p": "[kəlǽt̬ərəl]", "a": "担保"}, {"n": 1751, "w": "complexion", "p": "[kəmplékʃən]", "a": "顔色、肌の色"}, {"n": 1752, "w": "crackdown", "p": "[krǽkdàUn]", "a": "厳しい取り締まり"}, {"n": 1753, "w": "curator", "p": "[kjUəréɪt̬ər]", "a": "（博物館などの）学芸員、キュレーター"}, {"n": 1754, "w": "groove", "p": "[ɡruːv]", "a": "（細く長い）溝"}, {"n": 1755, "w": "inclination", "p": "[ɪnklɪnéɪʃən]", "a": "気持ち、意向"}, {"n": 1756, "w": "nuisance", "p": "[njúːsəns]", "a": "迷惑な人、邪魔"}, {"n": 1757, "w": "outskirts", "p": "[áUtskə̀ːrts]", "a": "郊外、町外れ"}, {"n": 1758, "w": "premise", "p": "[prémɪs]", "a": "前提、根拠、（～）敷地、構内"}, {"n": 1759, "w": "retention", "p": "[rɪténʃən]", "a": "記憶（力）、保持"}, {"n": 1760, "w": "lesion", "p": "[líːʒən]", "a": "病変、傷"}, {"n": 1761, "w": "remnant", "p": "[rémnənt]", "a": "残り、残存者"}, {"n": 1762, "w": "trajectory", "p": "[trədʒéktəri]", "a": "（ロケットなどの）弾道、軌道"}, {"n": 1763, "w": "archipelago", "p": "[ɑ̀ːrkəpéləɡoU]", "a": "群島、諸島"}, {"n": 1764, "w": "remorse", "p": "[rɪmɔ́ːrs]", "a": "深い後悔、自責の念"}, {"n": 1765, "w": "resilience", "p": "[rɪzÍliəns]", "a": "回復力、復元力"}, {"n": 1766, "w": "waiver", "p": "[wéɪvər]", "a": "権利放棄証書"}, {"n": 1767, "w": "vigil", "p": "[vɪ́dʒɪl]", "a": "（見守り・祈りなどのための）徹夜、寝ずの番"}, {"n": 1768, "w": "petulant", "p": "[pétʃələnt]", "a": "不機嫌な、怒りっぽい"}, {"n": 1769, "w": "quaint", "p": "[kweɪnt]", "a": "古風な、趣のある、風変わりで面白い"}, {"n": 1770, "w": "sparse", "p": "[spɑːrs]", "a": "まばらな"}, {"n": 1771, "w": "venerable", "p": "[vénərəbl]", "a": "由緒ある、敬うべき"}, {"n": 1772, "w": "state-of-the-art", "p": "[stèɪt̬əvðiɑ́ːrt]", "a": "最新鋭の"}, {"n": 1773, "w": "preemptive", "p": "[priémptɪv]", "a": "先制の"}, {"n": 1774, "w": "prodigious", "p": "[prədɪ́dʒəs]", "a": "驚異的な、巨大な"}, {"n": 1775, "w": "suave", "p": "[swɑːv]", "a": "物腰の柔らかな"}, {"n": 1776, "w": "untenable", "p": "[ʌ̀nténəbl]", "a": "批判に耐えられない、擁護できない"}, {"n": 1777, "w": "presumptuous", "p": "[prɪzʌ́mptʃuəs]", "a": "ずうずうしい"}, {"n": 1778, "w": "pernicious", "p": "[pərnɪ́ʃəs]", "a": "非常に有害な、破壊的な"}, {"n": 1779, "w": "pungent", "p": "[pʌ́ndʒənt]", "a": "（味・匂いが）刺激性の、（批評などが）辛辣な"}, {"n": 1780, "w": "languid", "p": "[lǽŋɡwɪd]", "a": "元気がない、物憂い"}, {"n": 1781, "w": "sullen", "p": "[sʌ́lən]", "a": "不機嫌な、うっとうしい"}, {"n": 1782, "w": "subversive", "p": "[səbvə́ːrsɪv]", "a": "（秩序・政府などを）破壊させる"}, {"n": 1783, "w": "malleable", "p": "[mǽliəbl]", "a": "適応性のある、柔順な、可鍛性の"}, {"n": 1784, "w": "pallid", "p": "[pǽlɪd]", "a": "（顔・肌などが）青白い、つまらない"}, {"n": 1785, "w": "upscale", "p": "[ʌ̀pskéɪl]", "a": "高級な"}, {"n": 1786, "w": "obtrusive", "p": "[əbtrúːsɪv]", "a": "ひどく目立つ、押しつけがましい"}, {"n": 1787, "w": "opulent", "p": "[ɑ́(ː)pjUlənt]", "a": "ぜいたくな、裕福な、豊富な"}, {"n": 1788, "w": "elastic", "p": "[ɪlǽstɪk]", "a": "融通性のある、弾力性のある"}, {"n": 1789, "w": "equitable", "p": "[ékwət̬əbl]", "a": "公平な、公正な"}, {"n": 1790, "w": "generic", "p": "[dʒənérɪk]", "a": "一般的な、包括的な"}, {"n": 1791, "w": "interim", "p": "[ɪ́nt̬ərɪm]", "a": "暫定的な、一時的な"}, {"n": 1792, "w": "ludicrous", "p": "[lúːdɪkrəs]", "a": "滑稽な、ばかげた"}, {"n": 1793, "w": "marginal", "p": "[mɑ́ːrdʒɪnəl]", "a": "わずかな、ごく小さい、限界の"}, {"n": 1794, "w": "overt", "p": "[oUvə́ːrt]", "a": "公然の、明白な"}, {"n": 1795, "w": "turbulent", "p": "[tə́ːrbjUlənt]", "a": "激動する、荒れ狂う"}, {"n": 1796, "w": "anecdotal", "p": "[æ̀nɪkdóUt̬əl]", "a": "逸話の、体験談の"}, {"n": 1797, "w": "luminous", "p": "[lúːmɪnəs]", "a": "光り輝く、光を発する"}, {"n": 1798, "w": "melancholy", "p": "[mélənkɑ̀(ː)li]", "a": "ふさぎ込んだ、憂鬱"}, {"n": 1799, "w": "ornate", "p": "[ɔːrnéɪt]", "a": "細部まで凝った、飾り立てた"}, {"n": 1800, "w": "nominally", "p": "[nɑ́(ː)mənəli]", "a": "名目上は"}, {"n": 1801, "w": "impel", "p": "[ɪmpél]", "a": "を駆り立てる、を強いる"}, {"n": 1802, "w": "lubricate", "p": "[lúːbrɪkèɪt]", "a": "に潤滑油を差す"}, {"n": 1803, "w": "nibble", "p": "[nɪ́bl]", "a": "少しずつかじる、（食べ物）を少しずつかじる"}, {"n": 1804, "w": "polarize", "p": "[póUləràɪz]", "a": "（集団など）を二極化させる、を分裂させる"}, {"n": 1805, "w": "pounce", "p": "[paUns]", "a": "ここぞとばかりに攻撃する、急襲する"}, {"n": 1806, "w": "retaliate", "p": "[rɪtǽlièɪt]", "a": "報復する、仕返しする"}, {"n": 1807, "w": "rummage", "p": "[rʌ́mɪdʒ]", "a": "かき回して捜す"}, {"n": 1808, "w": "spearhead", "p": "[spɪ́ərhèd]", "a": "（運動など）の先頭に立つ"}, {"n": 1809, "w": "typify", "p": "[tɪ́pɪfàɪ]", "a": "を象徴する、の典型である"}, {"n": 1810, "w": "prowl", "p": "[praUl]", "a": "（獲物などを求めて）うろつく"}, {"n": 1811, "w": "retract", "p": "[rɪtrǽkt]", "a": "を撤回する、を取り消す"}, {"n": 1812, "w": "ruffle", "p": "[rʌ́fl]", "a": "を動揺させる、の心を乱す"}, {"n": 1813, "w": "detest", "p": "[dɪtést]", "a": "をひどく嫌う"}, {"n": 1814, "w": "feign", "p": "[feɪn]", "a": "のふりをする、を装う"}, {"n": 1815, "w": "fluctuate", "p": "[flʌ́ktʃuèɪt]", "a": "変動する、上下する"}, {"n": 1816, "w": "meddle", "p": "[médl]", "a": "干渉する"}, {"n": 1817, "w": "pamper", "p": "[pǽmpər]", "a": "を甘やかす"}, {"n": 1818, "w": "peruse", "p": "[pərúːz]", "a": "をざっと読む、を熟読する"}, {"n": 1819, "w": "pique", "p": "[piːk]", "a": "を立腹させる、を刺激する"}, {"n": 1820, "w": "indoctrinate", "p": "[ɪndɑ́(ː)ktrɪnèɪt]", "a": "に教え込む"}, {"n": 1821, "w": "orchestrate", "p": "[ɔ́ːrkɪstrèɪt]", "a": "を画策する、の段取りを整える"}, {"n": 1822, "w": "fortify", "p": "[fɔ́ːrt̬əfàɪ]", "a": "を強化する"}, {"n": 1823, "w": "bolster", "p": "[bóUlstər]", "a": "を高める、を支援する"}, {"n": 1824, "w": "exhort", "p": "[ɪɡzɔ́ːrt]", "a": "に熱心に勧める"}, {"n": 1825, "w": "coerce", "p": "[koUə́ːrs]", "a": "に強いる"}, {"n": 1826, "w": "dazzle", "p": "[dǽzl]", "a": "を幻惑する"}, {"n": 1827, "w": "debunk", "p": "[dìːbʌ́ŋk]", "a": "の誤りを暴く"}, {"n": 1828, "w": "surmise", "p": "[sərmáɪz]", "a": "…と推測する"}, {"n": 1829, "w": "reiterate", "p": "[ri(ː)ɪ́t̬ərèɪt]", "a": "を繰り返す"}, {"n": 1830, "w": "enunciate", "p": "[ɪnʌ́nsièɪt]", "a": "を発表する、を明瞭に発音する"}, {"n": 1831, "w": "defuse", "p": "[dìːfjúːz]", "a": "（爆弾など）から信管を除去する、（危険）を取り除く、（緊張）を和らげる"}, {"n": 1832, "w": "berate", "p": "[bɪréɪt]", "a": "を責め立てる"}, {"n": 1833, "w": "abscond", "p": "[əbskɑ́(ː)nd]", "a": "持ち逃げする、逃亡する"}, {"n": 1834, "w": "broach", "p": "[broUtʃ]", "a": "（話題）を切り出す"}, {"n": 1835, "w": "bask", "p": "[bæsk]", "a": "日光浴をする、享受する"}, {"n": 1836, "w": "wrath", "p": "[ræθ]", "a": "激怒"}, {"n": 1837, "w": "antiseptic", "p": "[æ̀nt̬iséptɪk]", "a": "消毒剤"}, {"n": 1838, "w": "attrition", "p": "[ətrɪ́ʃən]", "a": "消耗、摩滅"}, {"n": 1839, "w": "bombardment", "p": "[bɑ(ː)mbɑ́ːrdmənt]", "a": "爆撃、砲撃"}, {"n": 1840, "w": "euphoria", "p": "[jufɔ́ːriə]", "a": "幸福感、多幸感"}, {"n": 1841, "w": "futility", "p": "[fjuːtɪ́lət̬i]", "a": "無益、無駄"}, {"n": 1842, "w": "infatuation", "p": "[ɪnfæ̀tʃuéɪʃən]", "a": "夢中になること"}, {"n": 1843, "w": "inhalation", "p": "[ɪ̀nhəléɪʃən]", "a": "吸入"}, {"n": 1844, "w": "labyrinth", "p": "[lǽbərɪ̀nθ]", "a": "迷路"}, {"n": 1845, "w": "reconnaissance", "p": "[rɪkɑ́(ː)nəzəns]", "a": "偵察"}, {"n": 1846, "w": "remittance", "p": "[rɪmÍtəns]", "a": "送金"}, {"n": 1847, "w": "rendezvous", "p": "[rɑ́ːndeɪvùː]", "a": "待ち合わせ、会う約束、待ち合わせ場所"}, {"n": 1848, "w": "restitution", "p": "[rèstɪtjúːʃən]", "a": "（盗難品などの）返還"}, {"n": 1849, "w": "slur", "p": "[sləːr]", "a": "中傷、誹謗"}, {"n": 1850, "w": "strife", "p": "[straɪf]", "a": "争い、不和"}, {"n": 1851, "w": "suitor", "p": "[súːt̬ər]", "a": "（女性への）求婚者"}, {"n": 1852, "w": "versatility", "p": "[və̀ːrsətɪ́lət̬i]", "a": "多才、多芸"}, {"n": 1853, "w": "interlude", "p": "[ɪ́nt̬ərlùːd]", "a": "合間、幕あい"}, {"n": 1854, "w": "layman", "p": "[léɪmən]", "a": "素人、門外漢"}, {"n": 1855, "w": "stampede", "p": "[stæmpíːd]", "a": "（動物・人が）どっと逃げ出すこと、集団暴走"}, {"n": 1856, "w": "repercussion", "p": "[rìːpərkʌ́ʃən]", "a": "（好ましくない）影響、余波"}, {"n": 1857, "w": "concession", "p": "[kənséʃən]", "a": "譲歩"}, {"n": 1858, "w": "hindsight", "p": "[háɪndsàɪt]", "a": "後知恵"}, {"n": 1859, "w": "felicity", "p": "[fəlɪ́sət̬i]", "a": "幸福、至福"}, {"n": 1860, "w": "creed", "p": "[kriːd]", "a": "信条"}, {"n": 1861, "w": "farce", "p": "[fɑːrs]", "a": "笑劇、道化芝居"}, {"n": 1862, "w": "juncture", "p": "[dʒʌ́ŋktʃər]", "a": "（重大）時期、接合点"}, {"n": 1863, "w": "gimmick", "p": "[ɡɪ́mɪk]", "a": "巧妙な仕掛け"}, {"n": 1864, "w": "caliber", "p": "[kǽləbər]", "a": "能力（の程度）、（銃の）口径"}, {"n": 1865, "w": "allegory", "p": "[ǽləɡɔ̀ːri]", "a": "寓話、例え話"}, {"n": 1866, "w": "ascension", "p": "[əsénʃən]", "a": "上昇、即位、（"}, {"n": 1867, "w": "bout", "p": "[baUt]", "a": "発病、発作、短い期間"}, {"n": 1868, "w": "animosity", "p": "[æ̀nɪmɑ́(ː)sət̬i]", "a": "憎悪、敵意"}, {"n": 1869, "w": "affront", "p": "[əfrʌ́nt]", "a": "（公然の）侮辱"}, {"n": 1870, "w": "barrage", "p": "[bərɑ́ːʒ]", "a": "集中砲火、弾幕"}, {"n": 1871, "w": "brunt", "p": "[brʌnt]", "a": "矢面、（攻撃の）矛先"}, {"n": 1872, "w": "audacious", "p": "[ɔːdéɪʃəs]", "a": "大胆な、無鉄砲な"}, {"n": 1873, "w": "colloquial", "p": "[kəlóUkwiəl]", "a": "口語体の"}, {"n": 1874, "w": "concerted", "p": "[kənsə́ːrt̬ɪd]", "a": "協力しての、共同での"}, {"n": 1875, "w": "cumbersome", "p": "[kʌ́mbərsəm]", "a": "（大きく重くて）扱いにくい、手に負えない"}, {"n": 1876, "w": "egregious", "p": "[ɪɡríːdʒəs]", "a": "実にひどい、途方もない"}, {"n": 1877, "w": "eminent", "p": "[émɪnənt]", "a": "高名な、傑出した"}, {"n": 1878, "w": "enigmatic", "p": "[ènɪɡmǽt̬ɪk]", "a": "謎めいた、不可解な"}, {"n": 1879, "w": "extraneous", "p": "[ɪkstréɪniəs]", "a": "無関係の、本質的でない"}, {"n": 1880, "w": "inconspicuous", "p": "[ɪ̀nkənspÍkjuəs]", "a": "目立たない、地味な"}, {"n": 1881, "w": "indulgent", "p": "[ɪndʌ́ldʒənt]", "a": "甘い、寛大な"}, {"n": 1882, "w": "queasy", "p": "[kwíːzi]", "a": "吐き気のする"}, {"n": 1883, "w": "repulsive", "p": "[rɪpʌ́lsɪv]", "a": "嫌悪感を起こさせる、不快な"}, {"n": 1884, "w": "scruffy", "p": "[skrʌ́fi]", "a": "汚らしい、だらしない"}, {"n": 1885, "w": "contentious", "p": "[kənténʃəs]", "a": "論争好きな"}, {"n": 1886, "w": "inscrutable", "p": "[ɪnskrúːt̬əbl]", "a": "不可思議な、計り知れない"}, {"n": 1887, "w": "exemplary", "p": "[ɪɡzémpləri]", "a": "模範的な"}, {"n": 1888, "w": "transient", "p": "[trǽnziənt]", "a": "はかない"}, {"n": 1889, "w": "latent", "p": "[léɪtənt]", "a": "潜在的な"}, {"n": 1890, "w": "extrinsic", "p": "[ekstrɪ́nsɪk]", "a": "外的な、非本質的な"}, {"n": 1891, "w": "adamant", "p": "[ǽdəmənt]", "a": "断固主張して"}, {"n": 1892, "w": "abject", "p": "[ǽbdʒekt]", "a": "絶望的な、悲惨な"}, {"n": 1893, "w": "adroit", "p": "[ədrɔ́ɪt]", "a": "巧みな、器用な"}, {"n": 1894, "w": "arbitrary", "p": "[ɑ́ːrbətrèri]", "a": "独断的な、専制的な、気まぐれな"}, {"n": 1895, "w": "benign", "p": "[bənáɪn]", "a": "優しい、温和な、（気候などが）穏やかな、（病理学的に）良性の"}, {"n": 1896, "w": "belatedly", "p": "[bɪléɪt̬ɪdli]", "a": "遅れて、手遅れで"}, {"n": 1897, "w": "cordially", "p": "[kɔ́(ː)rdʒəli]", "a": "心から、真心を込めて"}, {"n": 1898, "w": "exponentially", "p": "[èkspənénʃəli]", "a": "（増加が）急激に、指数関数的に"}, {"n": 1899, "w": "figuratively", "p": "[fɪ́ɡjərət̬ɪvli]", "a": "比喩的に"}, {"n": 1900, "w": "vehemently", "p": "[víːəməntli]", "a": "激しく、猛烈に"}];
+const ALL = DATA.map(d=>d.a);
+// curated vibrant accent palette (memory hooks); one per page
+const PAL = ["#F4633A","#0E7C7B","#E4007C","#2D5BFF","#E8A300","#7A3CC4","#0FA958","#D7263D","#147B8C","#C2185B","#3D7A00","#FF8A00","#1565C0","#8E24AA","#E65100","#00897B","#5D4037","#AD1457","#283593","#F4633A"];
+const CH_PAL = ["#111", "#2D5BFF", "#E4007C"];
+
+// pages: 20 practice (15 each) + 3 challenge (100 each)
+const PAGES = [];
+for(let i=0;i<20;i++) PAGES.push({type:"P", idx:i, items:DATA.slice(i*15,i*15+15), accent:PAL[i%PAL.length]});
+for(let c=0;c<3;c++) PAGES.push({type:"C", idx:c, items:DATA.slice(c*100,c*100+100), accent:["#7A3CC4","#0E7C7B","#D7263D"][c]});
+
+let cur = 0;
+const state = {}; // pageKey -> {answered:Set, correctCount, total, order:[...], opts:{idx:[...]}}
+
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function key(p){return p.type+p.idx;}
+
+function buildState(p){
+  const order = shuffle(p.items.map((_,i)=>i));
+  const opts = {};
+  p.items.forEach((it,i)=>{
+    const pool = shuffle(ALL.filter(a=>a!==it.a)).slice(0,3);
+    opts[i] = shuffle([it.a, ...pool]);
+  });
+  state[key(p)] = {answered:{}, correctCount:0, total:p.items.length, order, opts};
+}
+
+function buildPager(){
+  const pg = document.getElementById("pager");
+  pg.innerHTML="";
+  PAGES.forEach((p,gi)=>{
+    if(p.type==="C" && PAGES[gi-1] && PAGES[gi-1].type==="P"){
+      const s=document.createElement("span"); s.className="sep"; pg.appendChild(s);
+    }
+    const b=document.createElement("button");
+    if(p.type==="P"){b.textContent=p.idx+1;}
+    else{b.className="ch"; b.textContent="CH"+(p.idx+1);}
+    b.dataset.gi=gi;
+    b.onclick=()=>{cur=gi;render();};
+    pg.appendChild(b);
+  });
+}
+
+function render(){
+  const p = PAGES[cur];
+  const k = key(p);
+  // fresh shuffle every visit while the page is still untouched; preserve progress once answering starts
+  if(!state[k] || Object.keys(state[k].answered).length===0) buildState(p);
+  const st = state[k];
+  document.documentElement.style.setProperty("--accent", p.accent);
+  document.documentElement.style.setProperty("--accent-soft", p.accent+"1A");
+
+  // header texts
+  const first=p.items[0].n, last=p.items[p.items.length-1].n;
+  if(p.type==="P"){
+    document.getElementById("phBig").textContent="PAGE "+String(p.idx+1).padStart(2,"0");
+    document.getElementById("phTag").textContent="PRACTICE";
+    document.getElementById("phSub").textContent="15問 ・ No."+first+"–"+last;
+  }else{
+    document.getElementById("phBig").textContent="CHALLENGE "+(p.idx+1);
+    document.getElementById("phTag").textContent="CHALLENGE SESSION";
+    document.getElementById("phSub").textContent="100問 ・ No."+first+"–"+last+" ・ 全300語ぶっ通し";
+  }
+
+  // pager active
+  document.querySelectorAll("#pager button").forEach(b=>b.classList.toggle("on", +b.dataset.gi===cur));
+
+  // grid
+  const grid=document.getElementById("grid");
+  grid.innerHTML="";
+  st.order.forEach((origIdx, displayPos)=>{
+    const it=p.items[origIdx];
+    const card=document.createElement("div"); card.className="card";
+    const ans = st.answered[origIdx];
+    card.innerHTML =
+      '<div class="top"><span class="qno">Q'+(displayPos+1)+' / No.'+it.n+'</span>'+
+      '<div class="word">'+escapeHtml(it.w)+'</div>'+
+      '<div class="ipa">'+escapeHtml(it.p||"")+'</div></div>'+
+      '<div class="opts"></div>';
+    const optsWrap=card.querySelector(".opts");
+    const letters=["A","B","C","D"];
+    st.opts[origIdx].forEach((optText,oi)=>{
+      const btn=document.createElement("button");
+      btn.className="opt"; btn.disabled = !!ans;
+      btn.innerHTML='<span class="mk">'+letters[oi]+'</span>'+escapeHtml(optText);
+      if(ans){
+        if(optText===it.a) btn.classList.add("correct");
+        else if(optText===ans.picked) btn.classList.add("wrong");
+      }
+      btn.onclick=(e)=>answer(p,origIdx,optText,e.currentTarget);
+      optsWrap.appendChild(btn);
+    });
+    grid.appendChild(card);
+  });
+  updateScore();
+  window.scrollTo({top:0});
+  document.getElementById("prev").disabled = cur===0;
+  document.getElementById("next").disabled = cur===PAGES.length-1;
+}
+
+function answer(p,origIdx,picked,btnEl){
+  const st=state[key(p)];
+  if(st.answered[origIdx]) return;
+  const correct = p.items[origIdx].a;
+  st.answered[origIdx]={picked, ok:picked===correct};
+  if(picked===correct) st.correctCount++;
+  // update just this card's buttons in place (no re-render, no scroll jump)
+  const wrap = btnEl.closest(".opts");
+  const btns = wrap.querySelectorAll(".opt");
+  btns.forEach((b,i)=>{
+    b.disabled = true;
+    const txt = st.opts[origIdx][i];
+    if(txt===correct) b.classList.add("correct");
+    else if(b===btnEl) b.classList.add("wrong");
+  });
+  updateScore();
+}
+
+function updateScore(){
+  // global tally across all visited pages
+  let c=0,a=0;
+  Object.values(state).forEach(s=>{c+=s.correctCount; a+=Object.keys(s.answered).length;});
+  document.getElementById("sCorrect").textContent=c;
+  document.getElementById("sAns").textContent=a;
+  // page meter
+  const st=state[key(PAGES[cur])];
+  const done=Object.keys(st.answered).length;
+  const pct=Math.round(done/st.total*100);
+  document.getElementById("meter").style.width=pct+"%";
+  document.getElementById("pct").textContent=pct+"%";
+}
+
+function escapeHtml(s){return (s+"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m]));}
+
+document.getElementById("reshuffle").onclick=()=>{ buildState(PAGES[cur]); render(); };
+document.getElementById("prev").onclick=()=>{ if(cur>0){cur--;render();} };
+document.getElementById("next").onclick=()=>{ if(cur<PAGES.length-1){cur++;render();} };
+
+buildPager();
+render();
+</script>
+</body>
+</html>
