@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Media &amp; the Public Sphere — Practice Quiz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#FBF3E4; --ink:#1E1B16; --line:#1E1B16;
+  --correct:#1F9D55; --correct-bg:#D7F2DF;
+  --wrong:#E23E3E; --wrong-bg:#FBDADA;
+  --shadow:6px 6px 0 var(--line);
+  --disp:"Fraunces",Georgia,serif;
+  --mono:"Space Mono",ui-monospace,monospace;
+  --body:"Fraunces",Georgia,serif;
+  --accent:#F4633A; --accent-soft:#F4633A1A;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+body{
+  background:var(--paper);
+  background-image:radial-gradient(var(--line) 0.6px, transparent 0.6px);
+  background-size:22px 22px;
+  color:var(--ink); font-family:var(--body);
+  -webkit-font-smoothing:antialiased; line-height:1.5;
+  padding-bottom:120px;
+}
+header{position:sticky; top:0; z-index:50; background:var(--paper); border-bottom:3px solid var(--line);}
+.bar{max-width:1480px;margin:0 auto;padding:14px 22px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.logo{font-family:var(--disp);font-weight:900;font-size:1.45rem;letter-spacing:0;line-height:1.05}
+.logo small{display:block;font-family:var(--mono);font-size:.6rem;font-weight:700;letter-spacing:.16em;color:#8a7a5c;margin-top:4px}
+.scorebox{margin-left:auto;display:flex;gap:8px;align-items:center;font-family:var(--mono);font-weight:700;font-size:.8rem}
+.chip{border:2.5px solid var(--line);background:#fff;padding:5px 10px;border-radius:999px;box-shadow:3px 3px 0 var(--line)}
+.chip b{color:var(--accent)}
+.jumpbar{max-width:1480px;margin:0 auto;padding:0 22px 12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.jump-field{display:flex;align-items:center;gap:7px;font-family:var(--mono);font-weight:700;font-size:.66rem;letter-spacing:.12em;color:#8a7a5c}
+.jump-field select{
+  min-height:42px;font-family:var(--mono);font-weight:700;font-size:.86rem;letter-spacing:0;
+  border:2.5px solid var(--line);background:#fff;color:var(--ink);border-radius:10px;
+  padding:0 12px;box-shadow:3px 3px 0 var(--line);cursor:pointer;min-width:300px;
+}
+.jump-summary{font-family:var(--mono);font-weight:700;font-size:.72rem;letter-spacing:.06em;color:#8a7a5c}
+main{max-width:1480px;margin:0 auto;padding:22px 22px 0}
+.pagehead{display:flex;align-items:flex-end;gap:16px;margin-bottom:18px;flex-wrap:wrap}
+.pagehead .big{font-family:var(--disp);font-weight:900;font-size:2.4rem;line-height:.95;letter-spacing:0}
+.pagehead .tag{font-family:var(--mono);font-weight:700;font-size:.7rem;letter-spacing:.1em;background:var(--accent);color:#fff;padding:6px 12px;border:2.5px solid var(--line);border-radius:8px;box-shadow:var(--shadow)}
+.pagehead .sub{font-size:.95rem;color:#7a6c50;max-width:520px}
+.page-actions{margin-left:auto;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.reset-page,.reveal-answers{font-family:var(--mono);font-weight:700;font-size:.8rem;border:2.5px solid var(--line);background:#fff;padding:9px 16px;border-radius:10px;cursor:pointer;box-shadow:var(--shadow);transition:transform .08s}
+.reset-page:hover,.reveal-answers:hover:not(:disabled){transform:translate(-2px,-2px);box-shadow:8px 8px 0 var(--line)}
+.reset-page:active,.reveal-answers:active:not(:disabled){transform:translate(2px,2px);box-shadow:2px 2px 0 var(--line)}
+.reveal-answers{background:var(--accent);color:#fff}
+.reveal-answers:disabled{opacity:.5;cursor:default;transform:none;box-shadow:var(--shadow)}
+
+/* separated card grid */
+.grid{
+  display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:18px;align-items:start;
+  border:none;background:transparent;overflow:visible;
+}
+@media(max-width:1200px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:820px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.grid{grid-template-columns:1fr}}
+
+.card{background:#fff;border:3px solid var(--line);border-radius:8px;box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column;aspect-ratio:1/1;min-width:0;min-height:0}
+.card .top{padding:12px 12px 10px;border-bottom:3px solid var(--line);position:relative;background:var(--accent-soft);flex:0 0 auto}
+.card .qno{display:block;font-family:var(--mono);font-weight:700;font-size:.56rem;letter-spacing:.1em;color:#9a8a6a;margin-bottom:0}
+.card .qrow{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px}
+.question-reveal{
+  flex:0 0 auto;border:2px solid var(--line);background:#fff;color:var(--ink);border-radius:7px;
+  padding:4px 7px;font-family:var(--mono);font-size:.56rem;font-weight:700;letter-spacing:.04em;cursor:pointer;
+}
+.question-reveal:hover:not(:disabled){background:var(--accent-soft);border-color:var(--accent)}
+.question-reveal:disabled{opacity:.42;cursor:default}
+.card .prompt{font-family:var(--disp);font-weight:600;font-size:.92rem;letter-spacing:0;line-height:1.18;overflow-wrap:anywhere}
+.opts{display:flex;flex-direction:column;flex:1;min-height:0}
+.opt{
+  text-align:left;font-family:var(--body);font-size:.76rem;color:var(--ink);
+  background:#fff;border:none;border-top:2px solid #eadfca;
+  padding:8px 10px 8px 34px;cursor:pointer;position:relative;transition:background .12s;line-height:1.18;
+  flex:1;min-height:0;display:flex;align-items:center;overflow-wrap:anywhere;
+}
+.opt:first-child{border-top:none}
+.opt:hover:not(:disabled){background:#FFF3D6}
+.opt .mk{position:absolute;left:9px;top:50%;transform:translateY(-50%);width:19px;height:19px;border:2.5px solid var(--line);border-radius:6px;font-family:var(--mono);font-weight:700;font-size:.62rem;display:flex;align-items:center;justify-content:center;background:#fff}
+.opt.correct{background:var(--correct-bg)}
+.opt.correct .mk{background:var(--correct);color:#fff;border-color:var(--correct)}
+.opt.wrong{background:var(--wrong-bg)}
+.opt.wrong .mk{background:var(--wrong);color:#fff;border-color:var(--wrong)}
+.opt:disabled{cursor:default}
+.opt:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
+
+/* fill cards */
+.prompt-blank{
+  display:inline-block;vertical-align:-.22em;width:9ch;height:1.45em;margin:0 .16em;
+  border:2.5px solid #777;background:#fff;border-radius:7px;
+  box-shadow:inset 0 1px 2px rgba(0,0,0,.16),0 1px 1px rgba(0,0,0,.18);
+}
+.fill-card{background:#fff}
+.fill-card .top{background:var(--accent-soft);border-bottom:3px solid var(--line)}
+.fill-card .qno{color:#9a8a6a}
+.fillbox{padding:13px 14px;display:flex;flex-direction:column;gap:9px;flex:1;min-height:0;background:#fff}
+.fillsentence{font-family:var(--disp);font-weight:600;font-size:.92rem;line-height:1.42;color:var(--ink);overflow-wrap:anywhere}
+.fill-input{
+  display:inline-block;vertical-align:-.28em;font-family:var(--mono);font-size:.8rem;font-weight:700;
+  padding:4px 8px;margin:0 3px 4px;border:2.5px solid #777;background:#fff;color:var(--ink);outline:none;
+  width:var(--blank-width,11ch);max-width:calc(100% - 18px);height:1.95em;border-radius:7px;text-align:center;
+  box-shadow:inset 0 1px 2px rgba(0,0,0,.16),0 1px 1px rgba(0,0,0,.18);
+  transition:border-color .12s,box-shadow .12s,background .12s;
+}
+.fill-input::placeholder{color:transparent}
+.fill-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft),inset 0 1px 2px rgba(0,0,0,.14)}
+.fill-input.correct{background:var(--correct-bg);border-color:var(--correct);color:#0a7d44;box-shadow:0 0 0 3px rgba(31,157,85,.16),inset 0 1px 2px rgba(0,0,0,.12)}
+.fill-input.revealed{background:#fff;border-color:var(--accent);color:var(--ink);box-shadow:0 0 0 3px var(--accent-soft),inset 0 1px 2px rgba(0,0,0,.12)}
+.fill-status{font-family:var(--mono);font-size:.6rem;letter-spacing:.05em;color:#9a8a6a;min-height:13px;margin-top:auto}
+.fill-status.ok{color:var(--correct);font-weight:700}
+.fill-status.shown{color:var(--accent);font-weight:700}
+
+/* drag/drop cards */
+.drag-card{background:#fff;aspect-ratio:auto;min-height:560px;grid-column:span 2}
+.drag-card .top{padding:12px 12px 10px}
+.drag-card .prompt{font-size:.9rem;line-height:1.18}
+.dragbox{padding:12px;display:grid;grid-template-columns:minmax(0,1fr) minmax(180px,38%);gap:10px;flex:1;min-height:0;background:#fff}
+.drag-target-label{font-family:var(--mono);font-weight:700;font-size:.6rem;letter-spacing:.08em;color:#9a8a6a;text-transform:uppercase}
+.drag-slots{display:flex;flex-direction:column;gap:8px;min-height:0}
+.drag-row{display:grid;grid-template-columns:34px minmax(0,1fr);gap:7px;align-items:center}
+.drag-pos{font-family:var(--mono);font-weight:700;font-size:.6rem;color:#9a8a6a;text-align:right}
+.dropzone{
+  min-height:48px;border:2.5px dashed #9a8a6a;background:#FFF7E6;border-radius:7px;padding:5px;
+  display:flex;align-items:center;justify-content:center;transition:background .12s,border-color .12s;
+}
+.dropzone.over,.dropzone.selected{background:#FFF3D6;border-color:var(--accent)}
+.dropzone.filled{background:#fff;border-style:solid;border-color:#9a8a6a}
+.dropzone.solved{background:var(--correct-bg);border-style:solid;border-color:var(--correct)}
+.dropzone.revealed{background:#fff;border-style:solid;border-color:var(--accent)}
+.drop-hint{font-family:var(--mono);font-weight:700;font-size:.62rem;color:#9a8a6a;letter-spacing:.06em}
+.drag-stock{border:2px solid #eadfca;background:#fff;display:flex;flex-direction:column;gap:6px;padding:7px;min-height:0;overflow:auto}
+.stockplace{min-height:34px;display:flex;align-items:stretch}
+.stockplace.empty{border:2px solid rgba(154,138,106,.32);background:#fbf3e4}
+.drag-token{
+  width:100%;min-height:34px;display:flex;align-items:center;background:#fff;border:2px solid #8a8a8a;border-radius:4px;
+  padding:5px 8px;font-family:var(--body);font-weight:700;font-size:.76rem;line-height:1.15;color:var(--ink);
+  cursor:grab;text-align:left;box-shadow:inset 0 1px 2px rgba(0,0,0,.14),0 1px 1px rgba(0,0,0,.18);
+  touch-action:none;user-select:none;overflow-wrap:anywhere;
+}
+.drag-token:hover,.drag-token.selected{background:#FFF3D6;border-color:var(--accent)}
+.drag-token:active{cursor:grabbing}
+.drag-token.dragging{opacity:1;outline:3px solid var(--accent);outline-offset:1px;box-shadow:0 0 0 4px var(--accent-soft),0 5px 10px rgba(0,0,0,.22)}
+.drag-token.correct{background:var(--correct-bg);border-color:var(--correct);color:#0a7d44}
+.drag-token.revealed{border-color:var(--accent)}
+.drag-token.auto-moving{position:relative;z-index:30;pointer-events:none;transition:transform .68s cubic-bezier(.18,.88,.24,1.08)}
+.drag-ghost{position:fixed;z-index:9999;pointer-events:none;width:210px;max-width:70vw;opacity:1;transform:translate(-50%,-50%);box-shadow:0 8px 18px rgba(0,0,0,.28)}
+.drag-controls{grid-column:1/-1;display:flex;align-items:center;gap:10px;margin-top:auto}
+.drag-check{
+  border:2.5px solid var(--line);background:#fff;color:var(--ink);border-radius:8px;
+  padding:7px 10px;font-family:var(--mono);font-size:.62rem;font-weight:700;letter-spacing:.05em;cursor:pointer;
+}
+.drag-check:hover:not(:disabled){background:var(--accent-soft);border-color:var(--accent)}
+.drag-check:disabled{opacity:.42;cursor:default}
+.drag-status{font-family:var(--mono);font-size:.6rem;letter-spacing:.05em;color:#9a8a6a;min-height:13px}
+.drag-status.ok{color:var(--correct);font-weight:700}
+.drag-status.no{color:var(--wrong);font-weight:700}
+.drag-status.shown{color:var(--accent);font-weight:700}
+
+footer{position:fixed;bottom:0;left:0;right:0;background:var(--ink);color:var(--paper);border-top:3px solid var(--line);z-index:50}
+.fbar{max-width:1480px;margin:0 auto;padding:12px 22px;display:flex;align-items:center;gap:14px}
+.fbar .navb{font-family:var(--mono);font-weight:700;font-size:.8rem;border:2.5px solid var(--paper);background:transparent;color:var(--paper);padding:9px 16px;border-radius:10px;cursor:pointer;transition:transform .08s}
+.fbar .navb:hover:not(:disabled){background:var(--paper);color:var(--ink)}
+.fbar .navb:disabled{opacity:.3;cursor:default}
+.fbar .meter{flex:1;height:14px;border:2.5px solid var(--paper);border-radius:999px;overflow:hidden;background:#3a342a}
+.fbar .meter i{display:block;height:100%;width:0;background:var(--accent);transition:width .3s}
+.fbar .pct{font-family:var(--mono);font-weight:700;font-size:.82rem;min-width:54px;text-align:right}
+@media(max-width:560px){
+  .bar{padding:10px 14px}
+  .jump-field select{min-width:0;width:100%}
+  .jump-field{flex:1}
+  .pagehead .big{font-size:1.9rem}
+  .page-actions{margin-left:0;width:100%}
+  .reveal-answers,.reset-page{flex:1}
+  .drag-card{grid-column:span 1}
+  .dragbox{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="bar">
+    <div class="logo">Media &amp; the Public Sphere<small>PRACTICE QUIZ · OLTEANU · BRIGGS&amp;BURKE / KITTLER / KRESS</small></div>
+    <div class="scorebox"><span class="chip">SCORE <b id="sCorrect">0</b>/<span id="sAns">0</span></span></div>
+  </div>
+  <div class="jumpbar">
+    <label class="jump-field"><span>PAGE</span><select id="pageSelect"></select></label>
+    <div class="jump-summary" id="jumpSummary"></div>
+  </div>
+</header>
+<main>
+  <div class="pagehead">
+    <div class="big" id="phBig">PAGE 01</div>
+    <div class="tag" id="phTag">PRACTICE</div>
+    <div class="sub" id="phSub"></div>
+    <div class="page-actions">
+      <button class="reveal-answers" id="revealAnswers">Reveal answer</button>
+      <button class="reset-page" id="resetPage">Reset</button>
+    </div>
+  </div>
+  <div id="stage"></div>
+</main>
+<footer>
+  <div class="fbar">
+    <button class="navb" id="prev">◀ Prev</button>
+    <div class="meter"><i id="meter"></i></div>
+    <span class="pct" id="pct">0%</span>
+    <button class="navb" id="next">Next ▶</button>
+  </div>
+</footer>
+<script>
+/* ============================ QUESTION BANK ============================ */
+/* src tags: PS = Public Sphere/Enlightenment, KIT = Kittler, KR = Kress, X = cross-text */
+
+const MC_PS = [
+ {q:"Whose 1962 book argued that a public sphere formed in 18th-century Europe?",
+  ans:"Jürgen Habermas", opts:["Jürgen Habermas","Peter Burke","Baruch Spinoza","Jean-Jacques Rousseau"]},
+ {q:"From a media perspective (Briggs & Burke), the formation of public spheres was:",
+  ans:"slower, more complex, and plural", opts:["slower, more complex, and plural","sudden, simple, and nationally uniform","mainly caused by French Revolution","impossible before modern mass media"]},
+ {q:"Which technology (c. 1450) gave texts reproducibility and scaling?",
+  ans:"the printing press", opts:["the printing press","the telegraph","the phonograph","the typewriter"]},
+ {q:"Who used vernacular Bible translation and pamphlets to challenge Church authority?",
+  ans:"Martin Luther", opts:["Martin Luther","Denis Diderot","Voltaire","Galileo"]},
+ {q:"The earliest call for freedom of expression (1670) is attributed to:",
+  ans:"Baruch Spinoza", opts:["Baruch Spinoza","Rousseau","Habermas","Voltaire"]},
+ {q:"Spinoza argued legislators should govern people's ___, but not their views and expressions.",
+  ans:"actions", opts:["actions","emotions","beliefs","incomes"]},
+ {q:"The long-distance intellectual community of the late 17th–18th centuries was called:",
+  ans:"the Republic of Letters", opts:["the Republic of Letters","the Public Sphere","the Counter-Reformation","the Gutenberg Galaxy"]},
+ {q:"Which institutions are named as Enlightenment academies?",
+  ans:"the French Academy and the Royal Society", opts:["the French Academy and the Royal Society","the Republic of Letters and the Senate","the Bauhaus and the Sorbonne","the Inquisition and the Curia"]},
+ {q:"According to the slides, religious conflict ironically led to:",
+  ans:"institutionalizing political communication and public opinion", opts:["institutionalizing political communication and public opinion","destroying printed debate and public opinion","ending censorship and religious propaganda","collapsing literacy in public culture"]},
+ {q:"The Counter-Reformation's response to print propaganda was largely:",
+  ans:"censorship", opts:["censorship","free public debate","founding universities","vernacular translation"]},
+ {q:"The Enlightenment held that societies improve through knowledge, which requires:",
+  ans:"free public debate", opts:["free public debate","absolute monarchy","religious uniformity","military conquest"]},
+ {q:"Which thinker is tied to the concept of the social contract?",
+  ans:"Jean-Jacques Rousseau", opts:["Jean-Jacques Rousseau","Denis Diderot","Thomas Edison","Gunther Kress"]},
+ {q:"New 16th-century print media included pamphlets, broadsheets, sermons, songs, and:",
+  ans:"satirical images", opts:["satirical images","gramophone records","film reels","search engines"]},
+ {q:"Before print, political culture thrived in independent Renaissance cities such as:",
+  ans:"Florence and Venice", opts:["Florence and Venice","London and Paris","Vienna and Berlin","Moscow and Kyiv"]},
+ {q:"Print made the Enlightenment possible through books, journals, reviews, and the first:",
+  ans:"encyclopedias", opts:["encyclopedias","television broadcasts","radio stations","photographs"]},
+];
+
+const MC_KIT = [
+ {q:"Who built the first working phonograph (December 1877)?",
+  ans:"Thomas Edison", opts:["Thomas Edison","Charles Cros","Wilhelm Weber","Édouard-Léon Scott"]},
+ {q:"Who independently formulated the phonograph's principles but lacked funds to build it?",
+  ans:"Charles Cros", opts:["Charles Cros","Robert Willis","Hermann von Helmholtz","Rainer Maria Rilke"]},
+ {q:"For Kittler, media fundamentally store:",
+  ans:"the real, as acoustic events", opts:["the real, as acoustic events","meaning already translated into words","ideas already separated from noise","the soul as inner speech"]},
+ {q:"In the phonograph's spectrum of noise, articulate speech becomes:",
+  ans:"a second-order exception", opts:["a second-order exception","the primary signal","impossible to record","pure symbol"]},
+ {q:"The 19th-century concept of frequency replaced the measure of length with:",
+  ans:"time", opts:["time","weight","pitch ratios","temperature"]},
+ {q:"Pythagoras gave the integer ratios of music the proud name:",
+  ans:"logoi", opts:["logoi","frequencies","overtones","grooves"]},
+ {q:"Robert Willis (1829) showed that pitch had become a variable dependent on:",
+  ans:"speed", opts:["speed","string length","breath","notation"]},
+ {q:"Weber's writing tuning fork (1830) was the humble origin of:",
+  ans:"gramophone needles", opts:["gramophone needles","vacuum tubes","microphones","loudspeakers"]},
+ {q:"Scott's 1857 device that made sound visible was the:",
+  ans:"phonautograph", opts:["phonautograph","gramophone","telegraph","harmonizer"]},
+ {q:"Edison's invention essentially combined the synthesis of frequencies with their:",
+  ans:"analysis", opts:["analysis","notation","amplification","censorship"]},
+ {q:"Guyau (1880), citing Delboeuf, wrote: \u201cThe soul is a notebook of ___ recordings.\u201d",
+  ans:"phonographic", opts:["phonographic","written","printed","musical"]},
+ {q:"Why is the phonograph a superior brain-model for Kittler? Because one stylus performs:",
+  ans:"writing and reading, storing and scanning", opts:["writing and reading, storing and scanning","playback without any recording process","recording without any playback process","symbolic notation without material sound"]},
+ {q:"Kittler traces all concepts of \u201ctrace\u201d — including Derrida's ur-writing — back to:",
+  ans:"the gramophone needle", opts:["the gramophone needle","the printing press","the alphabet","the human ear"]},
+ {q:"Kittler's term for altering the real by changing playback speed is:",
+  ans:"time-axis manipulation (TAM)", opts:["time-axis manipulation (TAM)","transposition","secondary orality","frequency notation"]},
+ {q:"The phonograph was, in fact, a by-product of attempts to optimize:",
+  ans:"telephony and telegraphy", opts:["telephony and telegraphy","film projection","radio broadcasting","music notation"]},
+];
+
+const MC_KR = [
+ {q:"In the supermarket-sign example: image shows, colour frames/highlights, and writing ___.",
+  ans:"names", opts:["names","hides","counts","translates"]},
+ {q:"Multimodality identifies which modes are used, but not the difference in style; for that Kress turns to:",
+  ans:"Social Semiotics", opts:["Social Semiotics","Linguistics","Psychoanalysis","Phonetics"]},
+ {q:"The Salzburg UEFA parking sign shows that sometimes the issue is not communication but:",
+  ans:"power", opts:["power","colour","gesture","translation"]},
+ {q:"Kress's prospective, forward-looking term that foregrounds the sign-maker's interest is:",
+  ans:"design", opts:["design","competence","critique","grammar"]},
+ {q:"To avoid the connotations of \u201cfixed rules,\u201d Kress prefers \u201csemiotic resource\u201d over:",
+  ans:"grammar", opts:["grammar","mode","sign","genre"]},
+ {q:"Kress rejects the linguistic universalism (innate competence) associated with:",
+  ans:"Noam Chomsky", opts:["Noam Chomsky","Ferdinand de Saussure","Jürgen Habermas","Friedrich Kittler"]},
+ {q:"Kress's first sign-making principle: signs are ___ conjunctions of form and meaning.",
+  ans:"motivated", opts:["motivated","arbitrary","fixed","universal"]},
+ {q:"Sign-making is based on the ___ of the sign-maker, using culturally available resources.",
+  ans:"interest", opts:["interest","grammar","instinct","obligation"]},
+ {q:"Kress states starkly that there is no meaning without:",
+  ans:"framing", opts:["framing","writing","speech","translation"]},
+ {q:"In Kress's distinction, society is marked by power and culture is marked by:",
+  ans:"values", opts:["values","rules","grammar","nature"]},
+ {q:"The satellite view of language reveals that language is:",
+  ans:"one mode among others, and bounded", opts:["one mode among others, and bounded","the only full means of meaning","infinitely flexible across every mode","identical to human thought itself"]},
+ {q:"Kress cites snooker, football, and mathematics as semiotic work that is:",
+  ans:"beyond the reach of language", opts:["beyond the reach of language","fully captured by writing","impossible without speech","unique to children"]},
+ {q:"In the plant-cell example, drawing forces a commitment speech can avoid; Kress calls it:",
+  ans:"an epistemological commitment", opts:["an epistemological commitment","a grammatical rule","a social contract","a frequency shift"]},
+ {q:"The term sign belongs to Semiotics; concept belongs to:",
+  ans:"Psychology and Pedagogy", opts:["Psychology and Pedagogy","Media Theory concepts","Historical method terms","Acoustic science models"]},
+ {q:"The neglected \u201cinner trade\u201d between forms of representation, which Kress links to creativity, is:",
+  ans:"synaesthesia", opts:["synaesthesia","transposition","censorship","secondary orality"]},
+];
+
+const MC_X = [
+ {q:"What do all three readings share most fundamentally?",
+  ans:"material communication media shape meaning and society", opts:["material communication media shape meaning and society","print alone creates every public sphere","media study rejects social meaning entirely","Kittler wrote all three assigned readings"]},
+ {q:"Which mapping of received view being challenged is correct?",
+  ans:"Briggs/Burke: single sphere; Kittler: meaning; Kress: language-only", opts:["Briggs/Burke: single sphere; Kittler: meaning; Kress: language-only","Briggs/Burke: phonograph; Kittler: image; Kress: print-only","Briggs/Burke: Chomsky; Kittler: grammar; Kress: frequency","Briggs/Burke: trace; Kittler: public opinion; Kress: telegraphy"]},
+ {q:"On the human subject, Kittler ___ the human while Kress ___ the human.",
+  ans:"decenters / centers", opts:["decenters / centers","centers / decenters","ignores / ignores","worships / worships"]},
+ {q:"Kittler stresses recording captures the real beyond the alphabet. This contrasts most with Kress's emphasis on:",
+  ans:"socially motivated signs and resources", opts:["socially motivated signs and resources","musical harmony as natural order","lettered republics as debate networks","censorship as a print power"]},
+ {q:"Which reading is best described as social semiotics?",
+  ans:"Kress, Multimodality", opts:["Kress, Multimodality","Kittler, Gramophone","Briggs & Burke","Habermas"]},
+ {q:"Which reading is media materialism focused on sound and the real?",
+  ans:"Kittler's Gramophone media materialism", opts:["Kittler's Gramophone media materialism","Kress's Multimodality social semiotics","Briggs and Burke public sphere","Stjernfelt Lauritzen speech debate"]},
+ {q:"Which reading links a print revolution to the rise of public debate and the Enlightenment?",
+  ans:"Briggs and Burke public sphere", opts:["Briggs and Burke public sphere","Kittler and phonograph theory","Kress and multimodal design","none of the readings"]},
+ {q:"A shared theme is a historical SHIFT in dominant media. Which mapping fits?",
+  ans:"PS: manuscript-print; Kittler: intervals-frequencies; Kress: page-screen", opts:["PS: manuscript-print; Kittler: intervals-frequencies; Kress: page-screen","PS: image-writing; Kittler: speech-print; Kress: screen-page","PS: digital-print; Kittler: alphabet-image; Kress: sound-writing","PS: radio-books; Kittler: grammar-values; Kress: print-telegraph"]},
+ {q:"Which is a genuine COMMON argument (not a difference) among the three?",
+  ans:"material media reshape society and knowledge", opts:["material media reshape society and knowledge","Enlightenment optimism guides every author","media never shape social life","eighteenth-century print explains every reading"]},
+ {q:"Which best captures a DIFFERENCE in stance toward human agency?",
+  ans:"Kress foregrounds agency; Kittler bypasses consciousness", opts:["Kress foregrounds agency; Kittler bypasses consciousness","both foreground human agency equally","both deny human existence entirely","neither discusses human agency directly"]},
+ {q:"Public opinion can be weaponized (Public Sphere) resonates with which cross-text theme?",
+  ans:"media become instruments of power", opts:["media become instruments of power","frequency determines every political argument","images always defeat written language","memory works like a phonograph"]},
+ {q:"Stjernfelt & Lauritzen connect the Enlightenment debate to:",
+  ans:"tech giants and free speech", opts:["tech giants and free speech","phonograph invention and sound storage","Chomskyan linguistics and innate competence","Pythagorean ratios and musical harmony"]},
+ {q:"Which contrast best separates Kittler from Kress?",
+  ans:"apparatus records real; sign-maker designs meaning", opts:["apparatus records real; sign-maker designs meaning","print expands debate; society marks values","grammar fixes rules; writing replaces image","speech names objects; colour measures pitch"]},
+ {q:"Which pair best connects power across Public Sphere and Kress?",
+  ans:"public opinion weaponization and social power", opts:["public opinion weaponization and social power","frequency analysis and sound synthesis","Pythagorean ratios and musical harmony","phonograph needles and brain models"]},
+ {q:"Across readings, why does medium matter?",
+  ans:"forms change what people can know", opts:["forms change what people can know","authors ignore history and materiality completely","language alone contains every possible meaning","technology only delivers unchanged ideas smoothly"]},
+];
+
+/* Fill-in: text uses {} for each blank; ans is array of accepted-answer arrays (one per blank) */
+const FILL = [
+ {t:"For Kittler, media store not meaning but the {}.", ans:[["real"]], src:"KITTLER"},
+ {t:"Pythagoras called the integer ratios of music {}.", ans:[["logoi"]], src:"KITTLER"},
+ {t:"Kittler's term for changing the real by altering speed is {}-{} {}.", ans:[["time"],["axis"],["manipulation"]], src:"KITTLER"},
+ {t:"Guyau, citing Delboeuf, wrote that the {} is a notebook of phonographic recordings.", ans:[["soul"]], src:"KITTLER"},
+ {t:"The earliest call for freedom of expression came from {} in 1670.", ans:[["spinoza","baruch spinoza"]], src:"PUBLIC SPHERE"},
+ {t:"Luther challenged Church authority with vernacular Bible translation and {}.", ans:[["pamphlets","pamphlet"]], src:"PUBLIC SPHERE"},
+ {t:"The Enlightenment's long-distance intellectual network was the Republic of {}.", ans:[["letters"]], src:"PUBLIC SPHERE"},
+ {t:"Kress: signs are {} conjunctions of form and meaning, based on the {} of the sign-maker.", ans:[["motivated"],["interest","interests"]], src:"KRESS"},
+ {t:"Kress writes that there is no meaning without {}.", ans:[["framing","a frame","frames"]], src:"KRESS"},
+ {t:"For Kress, {} is marked by power, while {} is marked by values.", ans:[["society"],["culture"]], src:"KRESS"},
+ {t:"In the supermarket sign, image {} while writing {}.", ans:[["shows","show"],["names","name"]], src:"KRESS"},
+ {t:"Kress rejects the linguistic universalism of {}.", ans:[["chomsky","noam chomsky"]], src:"KRESS"},
+ {t:"Scott's 1857 device that made sound visible was the {}.", ans:[["phonautograph"]], src:"KITTLER"},
+ {t:"Habermas argued a single public sphere formed in the {} century; Briggs & Burke argue it was {} and plural.", ans:[["18th","eighteenth","18"],["slower","slow","more complex"]], src:"PUBLIC SPHERE"},
+ {t:"In the plant-cell example, drawing forces an {} commitment that speech can avoid.", ans:[["epistemological"]], src:"KRESS"},
+];
+
+/* Ordering: items already in CORRECT order; engine shuffles for display */
+const ORDER = [
+ {q:"Public sphere & Enlightenment — drag earliest → latest.",
+  items:["Printing press (c. 1450)","Protestant Reformation / Luther (1520s)","16th-century religious wars","English Civil War (1640s)","Spinoza's call for free expression (1670)","French Revolution (1789)"], src:"PUBLIC SPHERE"},
+ {q:"Kittler's lineage of sound recording — earliest → latest.",
+  items:["St Petersburg Academy vowel competition (1780)","Willis's elastic-tongue experiment (1829)","Weber's writing tuning fork (1830)","Scott's phonautograph (1857)","Edison's phonograph (1877)","Guyau, \u201cMemory and Phonograph\u201d (1880)"], src:"KITTLER"},
+ {q:"Theorizing media across the readings — earliest → latest.",
+  items:["Freud, \u201cProject for a Scientific Psychology\u201d (1895)","Schoenberg's last analysis of harmony (1910)","Rilke, \u201cPrimal Sound\u201d (1919)","Habermas, Structural Transformation (1962)","Kress, Multimodality (2010)"], src:"CROSS-TEXT"},
+ {q:"Kress's own progression of orientations — first → last.",
+  items:["competence","critique","design"], src:"KRESS"},
+];
+
+/* ============================ MIXED PAGES ============================ */
+function hasInlineBlank(text){return String(text||"").includes("___");}
+function ordinal(n){const s=["1st","2nd","3rd"]; return s[n] || (n+1)+"th";}
+function sourceItems(items,src,prefix){
+  return items.map((it,i)=>({
+    id:prefix+"-"+i,
+    kind:hasInlineBlank(it.q)?"fill":"mc",
+    q:it.q,
+    ans:it.ans,
+    opts:it.opts,
+    src
+  }));
+}
+const MC_SOURCE = [
+  ...sourceItems(MC_PS,"PUBLIC SPHERE","ps"),
+  ...sourceItems(MC_KIT,"KITTLER","kit"),
+  ...sourceItems(MC_KR,"KRESS","kr"),
+  ...sourceItems(MC_X,"CROSS-TEXT","x")
+];
+const FILL_SOURCE = FILL.map((it,i)=>({id:"fill-"+i,kind:"fill",q:it.t,ans:it.ans,src:it.src}));
+const DRAG_SOURCE = Array.from({length:15},(_,i)=>{
+  const task=ORDER[i%ORDER.length];
+  return {
+    id:"drag-"+i,
+    kind:"drag",
+    q:task.q,
+    src:task.src,
+    items:task.items.slice()
+  };
+});
+function makeMixedPages(){
+  const pages=[];
+  let mi=0, fi=0, di=0;
+  for(let pi=0; pi<3; pi++){
+    const items=[];
+    for(let cycle=0; cycle<5; cycle++){
+      if(DRAG_SOURCE[di]) items.push(DRAG_SOURCE[di++]);
+      for(let n=0;n<2;n++) if(MC_SOURCE[mi]) items.push(MC_SOURCE[mi++]);
+      if(FILL_SOURCE[fi]) items.push(FILL_SOURCE[fi++]);
+      for(let n=0;n<2;n++) if(MC_SOURCE[mi]) items.push(MC_SOURCE[mi++]);
+    }
+    pages.push({
+      type:"mixed",
+      title:"PAGE "+String(pi+1).padStart(2,"0"),
+      tag:"MIXED PRACTICE",
+      sub:"30 mixed questions: multiple choice, typed blanks, and drag/drop ordering.",
+      accent:"#F4633A",
+      items
+    });
+  }
+  return pages;
+}
+const PAGES = makeMixedPages();
+
+/* ============================ ENGINE ============================ */
+let cur = 0;
+const state = {};
+const $=id=>document.getElementById(id);
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function key(i){return "page"+i;}
+function norm(s){return (s+"").toLowerCase().replace(/[.,!?;:'"()]/g,"").replace(/\s+/g," ").trim();}
+function fillParts(text){return String(text).includes("{}") ? String(text).split("{}") : String(text).split("___");}
+function answerSets(it){
+  if(Array.isArray(it.ans)) return it.ans;
+  const blanks=fillParts(it.q).length-1;
+  if(blanks>1 && String(it.ans).includes("/")){
+    const parts=String(it.ans).split("/").map(s=>s.trim()).filter(Boolean);
+    if(parts.length===blanks) return parts.map(x=>[x]);
+  }
+  return Array.from({length:Math.max(1,blanks)},(_,i)=>[i===0 ? String(it.ans) : ""]);
+}
+function blankWidth(acc){
+  const longest=Math.max(4,...(acc||[]).map(x=>String(x).length));
+  return Math.min(Math.max(longest+3,8),26)+"ch";
+}
+function buildState(i){
+  const p=PAGES[i], k=key(i);
+  const st={answered:{},done:{},revealedItems:{},dragChecked:{},correct:0,total:p.items.length,opts:{},placed:{},stock:{},selected:null,revealed:false};
+  p.items.forEach((it,idx)=>{
+    if(it.kind==="mc") st.opts[idx]=shuffle(it.opts);
+    if(it.kind==="drag"){
+      st.stock[idx]=shuffle(it.items.map((_,x)=>x));
+      st.placed[idx]=it.items.map(()=>null);
+    }
+  });
+  state[k]=st;
+}
+function currentState(){const k=key(cur); if(!state[k]) buildState(cur); return state[k];}
+function itemRevealed(st,idx){return !!st.revealed || !!(st.revealedItems&&st.revealedItems[idx]);}
+function itemLocked(st,idx){return !!st.done[idx] || itemRevealed(st,idx);}
+function answeredCount(st){
+  if(st.revealed) return st.total;
+  const ids=new Set([...Object.keys(st.answered),...Object.keys(st.done),...Object.keys(st.revealedItems||{})]);
+  return ids.size;
+}
+
+function render(opts={}){
+  const keepX=window.scrollX, keepY=window.scrollY;
+  const p=PAGES[cur], st=currentState();
+  document.documentElement.style.setProperty("--accent",p.accent);
+  document.documentElement.style.setProperty("--accent-soft",p.accent+"1A");
+  $("phBig").textContent=p.title;
+  $("phTag").textContent=p.tag;
+  $("phSub").textContent=p.sub;
+  $("revealAnswers").disabled=!!st.revealed;
+  $("revealAnswers").textContent=st.revealed?"Answers shown":"Reveal answer";
+  syncPager();
+  const stage=$("stage"); stage.innerHTML="";
+  const grid=document.createElement("div"); grid.className="grid";
+  p.items.forEach((it,idx)=>renderQuestion(grid,p,st,it,idx));
+  stage.appendChild(grid);
+  updateScore();
+  $("prev").disabled=cur===0;
+  $("next").disabled=cur===PAGES.length-1;
+  if(opts.scrollTop) window.scrollTo({top:0,left:0});
+  else requestAnimationFrame(()=>window.scrollTo({top:keepY,left:keepX}));
+}
+function qnoText(idx,it){return "Q"+(idx+1)+" - "+it.src;}
+function appendQuestionHeader(top,st,it,idx){
+  const row=document.createElement("div"); row.className="qrow";
+  const qno=document.createElement("span"); qno.className="qno"; qno.textContent=qnoText(idx,it);
+  const btn=document.createElement("button"); btn.type="button"; btn.className="question-reveal";
+  const shown=itemRevealed(st,idx);
+  btn.textContent=shown?"Answer shown":"Reveal";
+  btn.disabled=shown || !!st.answered[idx] || !!st.done[idx];
+  btn.onclick=e=>{e.stopPropagation(); revealQuestion(idx);};
+  row.appendChild(qno); row.appendChild(btn); top.appendChild(row);
+}
+function renderQuestion(grid,p,st,it,idx){
+  if(it.kind==="mc") return renderMCQuestion(grid,st,it,idx);
+  if(it.kind==="fill") return renderFillQuestion(grid,st,it,idx);
+  return renderDragQuestion(grid,st,it,idx);
+}
+
+function renderMCQuestion(grid,st,it,idx){
+  const ans=st.answered[idx];
+  const card=document.createElement("div"); card.className="card";
+  const top=document.createElement("div"); top.className="top";
+  const prompt=document.createElement("div"); prompt.className="prompt"; prompt.textContent=it.q;
+  appendQuestionHeader(top,st,it,idx); top.appendChild(prompt);
+  const opts=document.createElement("div"); opts.className="opts";
+  const letters=["A","B","C","D","E"];
+  st.opts[idx].forEach((txt,j)=>{
+    const b=document.createElement("button"); b.className="opt"; b.disabled=!!ans||itemLocked(st,idx); b.dataset.txt=txt;
+    const mk=document.createElement("span"); mk.className="mk"; mk.textContent=letters[j];
+    b.appendChild(mk); b.appendChild(document.createTextNode(txt));
+    if(ans){ if(txt===it.ans) b.classList.add("correct"); else if(txt===ans.picked) b.classList.add("wrong"); }
+    else if(itemRevealed(st,idx) && txt===it.ans) b.classList.add("correct");
+    b.onclick=()=>answerMC(idx,txt,b);
+    opts.appendChild(b);
+  });
+  card.appendChild(top); card.appendChild(opts); grid.appendChild(card);
+}
+function answerMC(idx,picked,btn){
+  const st=currentState(), it=PAGES[cur].items[idx];
+  if(st.answered[idx]||itemLocked(st,idx)) return;
+  st.answered[idx]={picked,ok:picked===it.ans};
+  if(picked===it.ans) st.correct++;
+  const wrap=btn.closest(".opts");
+  Array.from(wrap.children).forEach(b=>{
+    b.disabled=true;
+    if(b.dataset.txt===it.ans) b.classList.add("correct");
+    else if(b===btn) b.classList.add("wrong");
+  });
+  const reveal=btn.closest(".card").querySelector(".question-reveal");
+  if(reveal) reveal.disabled=true;
+  updateScore();
+}
+
+function renderFillQuestion(grid,st,it,idx){
+  const card=document.createElement("div"); card.className="card fill-card";
+  const top=document.createElement("div"); top.className="top";
+  appendQuestionHeader(top,st,it,idx);
+  const box=document.createElement("div"); box.className="fillbox";
+  const sent=document.createElement("div"); sent.className="fillsentence";
+  const parts=fillParts(it.q);
+  const accepted=answerSets(it);
+  const inputs=[];
+  const status=document.createElement("div"); status.className="fill-status";
+  function checkAll(){
+    if(itemLocked(st,idx)) return;
+    const allok=accepted.every((acc,bi)=>acc.map(norm).includes(norm(inputs[bi].value)));
+    if(allok){
+      st.done[idx]=true; st.correct++;
+      inputs.forEach((inp,bi)=>{inp.value=accepted[bi][0]; inp.readOnly=true; inp.classList.add("correct");});
+      status.textContent="correct"; status.className="fill-status ok";
+      const reveal=card.querySelector(".question-reveal");
+      if(reveal) reveal.disabled=true;
+      updateScore();
+    }
+  }
+  parts.forEach((seg,bi)=>{
+    sent.appendChild(document.createTextNode(seg));
+    if(bi<parts.length-1){
+      const inp=document.createElement("input"); inp.className="fill-input"; inp.type="text";
+      inp.setAttribute("autocomplete","off"); inp.setAttribute("autocapitalize","off");
+      inp.setAttribute("autocorrect","off"); inp.spellcheck=false; inp.placeholder="";
+      inp.style.setProperty("--blank-width",blankWidth(accepted[bi]));
+      inp.setAttribute("aria-label","Blank "+(bi+1)+" for question "+(idx+1));
+      if(itemLocked(st,idx)){
+        inp.value=(accepted[bi]&&accepted[bi][0])||"";
+        inp.readOnly=true;
+        inp.classList.add(st.done[idx]?"correct":"revealed");
+      }
+      inp.addEventListener("input",checkAll);
+      inputs.push(inp); sent.appendChild(inp);
+    }
+  });
+  if(st.done[idx]){status.textContent="correct"; status.className="fill-status ok";}
+  else if(itemRevealed(st,idx)){status.textContent="answer shown"; status.className="fill-status shown";}
+  box.appendChild(sent); box.appendChild(status);
+  card.appendChild(top); card.appendChild(box); grid.appendChild(card);
+}
+
+function renderDragQuestion(grid,st,it,idx){
+  const slots=itemRevealed(st,idx) ? it.items.map((_,n)=>n) : st.placed[idx];
+  const locked=itemLocked(st,idx);
+  const complete=slots.every(v=>v!==null);
+  const card=document.createElement("div"); card.className="card drag-card";
+  card.dataset.qidx=idx;
+  const top=document.createElement("div"); top.className="top";
+  const prompt=document.createElement("div"); prompt.className="prompt"; prompt.textContent=it.q;
+  appendQuestionHeader(top,st,it,idx); top.appendChild(prompt);
+  const box=document.createElement("div"); box.className="dragbox";
+  const slotWrap=document.createElement("div"); slotWrap.className="drag-slots";
+  it.items.forEach((_,pos)=>{
+    const row=document.createElement("div"); row.className="drag-row";
+    const posLabel=document.createElement("div"); posLabel.className="drag-pos"; posLabel.textContent=ordinal(pos);
+    const drop=document.createElement("div"); drop.className="dropzone"; drop.dataset.qidx=idx; drop.dataset.slot=pos;
+    const itemIdx=slots[pos];
+    if(itemIdx===null){
+      const hint=document.createElement("span"); hint.className="drop-hint"; hint.textContent="blank space";
+      drop.appendChild(hint);
+    }else{
+      drop.appendChild(makeDragToken(idx,itemIdx,true,locked,st.done[idx],itemRevealed(st,idx),pos));
+      drop.classList.add(st.done[idx]?"solved":itemRevealed(st,idx)?"revealed":"filled");
+    }
+    if(!locked){
+      drop.addEventListener("dragover",e=>{e.preventDefault();drop.classList.add("over");});
+      drop.addEventListener("dragleave",()=>drop.classList.remove("over"));
+      drop.addEventListener("drop",e=>{e.preventDefault();drop.classList.remove("over");const info=parseDrag(e); if(info&&Number(info.idx)===idx) placeDrag(idx,Number(info.itemIdx),pos,info.fromSlot);});
+      drop.onclick=()=>dropSelected(idx,pos);
+    }
+    row.appendChild(posLabel); row.appendChild(drop);
+    slotWrap.appendChild(row);
+  });
+  const rack=document.createElement("div"); rack.className="drag-stock";
+  (st.stock[idx]||[]).forEach(itemIdx=>{
+    const place=document.createElement("div"); place.className="stockplace";
+    if(itemRevealed(st,idx) || slots.includes(itemIdx)) place.classList.add("empty");
+    else place.appendChild(makeDragToken(idx,itemIdx,false,locked,false,false,null));
+    rack.appendChild(place);
+  });
+  if(!locked){
+    rack.addEventListener("dragover",e=>{e.preventDefault();});
+    rack.addEventListener("drop",e=>{e.preventDefault();const info=parseDrag(e); if(info&&Number(info.idx)===idx&&info.fromSlot!==null) removeDrag(idx,Number(info.fromSlot));});
+  }
+  const controls=document.createElement("div"); controls.className="drag-controls";
+  const check=document.createElement("button"); check.type="button"; check.className="drag-check"; check.textContent=st.done[idx]?"Checked":"Check answer";
+  check.disabled=locked || !complete;
+  check.onclick=e=>{e.stopPropagation(); checkDragAnswer(idx);};
+  const status=document.createElement("div"); status.className="drag-status";
+  if(st.done[idx]){status.textContent="correct"; status.className="drag-status ok";}
+  else if(st.dragChecked[idx]==="wrong"){status.textContent="not correct yet"; status.className="drag-status no";}
+  else if(st.dragChecked[idx]==="moved"){status.textContent="answer moved into place"; status.className="drag-status shown";}
+  else if(itemRevealed(st,idx)){status.textContent="answer shown"; status.className="drag-status shown";}
+  else if(!complete){status.textContent="place every card first";}
+  else{status.textContent="ready to check";}
+  controls.appendChild(check); controls.appendChild(status);
+  box.appendChild(slotWrap); box.appendChild(rack); box.appendChild(controls);
+  card.appendChild(top); card.appendChild(box); grid.appendChild(card);
+}
+function makeDragToken(idx,itemIdx,fromSlot,locked,correct,revealed,slotIndex){
+  const it=PAGES[cur].items[idx];
+  const token=document.createElement("div"); token.className="drag-token"; token.textContent=it.items[itemIdx];
+  token.dataset.itemIdx=itemIdx;
+  token.setAttribute("role","button"); token.tabIndex=locked?-1:0;
+  if(correct) token.classList.add("correct");
+  if(revealed) token.classList.add("revealed");
+  const st=currentState();
+  if(st.selected && st.selected.idx===idx && st.selected.itemIdx===itemIdx && st.selected.slotIndex===slotIndex) token.classList.add("selected");
+  if(!locked){
+    token.draggable=true;
+    token.addEventListener("dragstart",e=>{
+      token.classList.add("dragging");
+      const img=token.cloneNode(true);
+      img.classList.add("drag-ghost");
+      img.style.left="-9999px"; img.style.top="-9999px"; img.style.transform="none";
+      document.body.appendChild(img);
+      e.dataTransfer.effectAllowed="move";
+      e.dataTransfer.setData("text/plain",JSON.stringify({idx,itemIdx,fromSlot:fromSlot?slotIndex:null}));
+      e.dataTransfer.setDragImage(img,Math.min(90,img.offsetWidth/2),Math.min(24,img.offsetHeight/2));
+      setTimeout(()=>img.remove(),0);
+    });
+    token.addEventListener("dragend",()=>token.classList.remove("dragging"));
+    token.addEventListener("pointerdown",e=>beginPointerDrag(e,idx,itemIdx,fromSlot?slotIndex:null,token));
+    token.onclick=e=>{
+      e.stopPropagation();
+      if(token.dataset.dragMoved==="1") return;
+      selectDrag(idx,itemIdx,fromSlot?slotIndex:null);
+    };
+    if(fromSlot){
+      token.ondblclick=e=>{e.stopPropagation(); removeDrag(idx,slotIndex);};
+    }
+  }
+  return token;
+}
+function parseDrag(e){try{return JSON.parse(e.dataTransfer.getData("text/plain"));}catch(_){return null;}}
+function selectDrag(idx,itemIdx,slotIndex){
+  const st=currentState(); if(itemLocked(st,idx)) return;
+  st.selected={idx,itemIdx,slotIndex}; render();
+}
+function dropSelected(idx,toSlot){
+  const st=currentState();
+  if(st.selected && st.selected.idx===idx) placeDrag(idx,st.selected.itemIdx,toSlot,st.selected.slotIndex);
+}
+function taskCorrect(idx){
+  const st=currentState(), it=PAGES[cur].items[idx];
+  return st.placed[idx].length===it.items.length && st.placed[idx].every((v,n)=>v===n);
+}
+function dragTokenRects(idx){
+  const card=document.querySelector('.drag-card[data-qidx="'+idx+'"]');
+  const rects={};
+  if(!card) return rects;
+  card.querySelectorAll(".drag-token[data-item-idx]").forEach(token=>{
+    rects[token.dataset.itemIdx]=token.getBoundingClientRect();
+  });
+  return rects;
+}
+function animateDragCorrection(idx){
+  const st=currentState();
+  const before=dragTokenRects(idx);
+  st.revealedItems[idx]=true;
+  st.dragChecked[idx]="moved";
+  st.selected=null;
+  render();
+  requestAnimationFrame(()=>{
+    const card=document.querySelector('.drag-card[data-qidx="'+idx+'"]');
+    if(!card) return;
+    card.querySelectorAll(".drag-token[data-item-idx]").forEach(token=>{
+      const prev=before[token.dataset.itemIdx];
+      if(!prev) return;
+      const next=token.getBoundingClientRect();
+      const dx=prev.left-next.left;
+      const dy=prev.top-next.top;
+      if(Math.abs(dx)<1 && Math.abs(dy)<1) return;
+      token.style.transition="none";
+      token.style.transform="translate("+dx+"px,"+dy+"px)";
+      token.classList.add("auto-moving");
+      token.getBoundingClientRect();
+      token.style.transition="";
+      requestAnimationFrame(()=>{token.style.transform="translate(0,0)";});
+      token.addEventListener("transitionend",()=>{
+        token.classList.remove("auto-moving");
+        token.style.transform="";
+        token.style.transition="";
+      },{once:true});
+    });
+  });
+}
+function checkDragAnswer(idx){
+  const st=currentState();
+  if(itemLocked(st,idx)) return;
+  const slots=st.placed[idx]||[];
+  if(slots.some(v=>v===null)) return;
+  if(taskCorrect(idx)){
+    st.done[idx]=true;
+    st.dragChecked[idx]="correct";
+    st.correct++;
+    st.selected=null;
+    render();
+  }else{
+    animateDragCorrection(idx);
+  }
+}
+function placeDrag(idx,itemIdx,toSlot,fromSlot){
+  const st=currentState();
+  if(itemLocked(st,idx)) return;
+  const slots=st.placed[idx];
+  if(fromSlot!==null && fromSlot!==undefined && Number(fromSlot)===toSlot){st.selected=null; render(); return;}
+  delete st.dragChecked[idx];
+  const oldSlot=slots.findIndex(v=>v===itemIdx);
+  const displaced=slots[toSlot];
+  if(oldSlot>=0) slots[oldSlot]=null;
+  if(fromSlot!==null && fromSlot!==undefined && Number(fromSlot)>=0) slots[Number(fromSlot)]=displaced;
+  slots[toSlot]=itemIdx;
+  st.selected=null;
+  render();
+}
+function removeDrag(idx,slotIndex){
+  const st=currentState(); if(itemLocked(st,idx)) return;
+  delete st.dragChecked[idx];
+  st.placed[idx][slotIndex]=null; st.selected=null; render();
+}
+function beginPointerDrag(e,idx,itemIdx,fromSlot,source){
+  const st=currentState(); if(itemLocked(st,idx) || (e.button!==undefined && e.button!==0)) return;
+  e.preventDefault();
+  let moved=false;
+  source.classList.add("dragging");
+  const ghost=source.cloneNode(true); ghost.classList.add("drag-ghost"); document.body.appendChild(ghost);
+  function move(x,y){ghost.style.left=x+"px"; ghost.style.top=y+"px";}
+  move(e.clientX,e.clientY);
+  function onMove(ev){moved=true; move(ev.clientX,ev.clientY);}
+  function onUp(ev){
+    document.removeEventListener("pointermove",onMove);
+    document.removeEventListener("pointerup",onUp);
+    source.classList.remove("dragging"); ghost.remove();
+    if(moved){source.dataset.dragMoved="1"; setTimeout(()=>{delete source.dataset.dragMoved;},0);}
+    const target=document.elementFromPoint(ev.clientX,ev.clientY);
+    const drop=target && target.closest(".dropzone");
+    const rack=target && target.closest(".drag-stock");
+    if(drop && Number(drop.dataset.qidx)===idx) placeDrag(idx,itemIdx,Number(drop.dataset.slot),fromSlot);
+    else if(rack && fromSlot!==null && fromSlot!==undefined) removeDrag(idx,Number(fromSlot));
+    else if(!moved) selectDrag(idx,itemIdx,fromSlot);
+  }
+  document.addEventListener("pointermove",onMove);
+  document.addEventListener("pointerup",onUp,{once:true});
+}
+
+function revealQuestion(idx){
+  const st=currentState();
+  if(itemRevealed(st,idx) || st.answered[idx] || st.done[idx]) return;
+  st.revealedItems[idx]=true;
+  st.selected=null;
+  render();
+}
+
+function updateScore(){
+  let c=0,a=0;
+  PAGES.forEach((p,i)=>{
+    const s=state[key(i)]; if(!s) return;
+    c+=s.correct;
+    a+=answeredCount(s);
+  });
+  $("sCorrect").textContent=c; $("sAns").textContent=a;
+  const st=currentState(), p=PAGES[cur];
+  const done=answeredCount(st);
+  const pct=Math.round(done/p.items.length*100);
+  $("meter").style.width=pct+"%"; $("pct").textContent=pct+"%";
+}
+function pageLabel(p,i){return String(i+1).padStart(2,"0")+" - "+p.title+" (30)";}
+function buildPager(){
+  const sel=$("pageSelect"); sel.innerHTML="";
+  PAGES.forEach((p,i)=>{const o=document.createElement("option");o.value=i;o.textContent=pageLabel(p,i);sel.appendChild(o);});
+  sel.onchange=()=>{cur=Number(sel.value);render({scrollTop:true});};
+}
+function syncPager(){$("pageSelect").value=String(cur);$("jumpSummary").textContent=PAGES[cur].items.length+" mixed questions";}
+$("revealAnswers").onclick=()=>{const st=currentState(); st.revealed=true; st.selected=null; render();};
+$("resetPage").onclick=()=>{delete state[key(cur)]; buildState(cur); render();};
+$("prev").onclick=()=>{if(cur>0){cur--;render({scrollTop:true});}};
+$("next").onclick=()=>{if(cur<PAGES.length-1){cur++;render({scrollTop:true});}};
+buildPager();
+render({scrollTop:true});
+</script>
+</body>
+</html>
